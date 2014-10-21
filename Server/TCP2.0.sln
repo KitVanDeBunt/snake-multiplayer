@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TCP", "TCP\TCP.vcxproj", "{A8A47252-E76D-426D-AA6B-1B4650D9DE24}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9AA7EF9A-5199-4719-A9AA-FF0ABEC702A8}"
+	ProjectSection(SolutionItems) = preProject
+		Performance1.psess = Performance1.psess
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A8A47252-E76D-426D-AA6B-1B4650D9DE24}.Debug|Win32.ActiveCfg = Debug|Win32
+		{A8A47252-E76D-426D-AA6B-1B4650D9DE24}.Debug|Win32.Build.0 = Debug|Win32
+		{A8A47252-E76D-426D-AA6B-1B4650D9DE24}.Release|Win32.ActiveCfg = Release|Win32
+		{A8A47252-E76D-426D-AA6B-1B4650D9DE24}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
