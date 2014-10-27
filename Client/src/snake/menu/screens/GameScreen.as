@@ -4,7 +4,7 @@ package snake.menu.screens
 	import feathers.controls.Screen;
 	import feathers.data.ListCollection;
 	import starling.events.Event;
-	import snake.game.Main;
+	import snake.game.Game;
 	import starling.display.Sprite;
 	import snake.menu.ScreenEvents;
 	/**
@@ -14,7 +14,7 @@ package snake.menu.screens
 	public class GameScreen extends Screen
 	{
 		
-		private var gameLayer:Main;
+		private var gameLayer:Game;
 		
 		private var buttons:ButtonGroup;
 		private var buttonList:ListCollection = new ListCollection([
@@ -28,7 +28,7 @@ package snake.menu.screens
 			this.addChild(buttons);
 			buttons.dataProvider = buttonList;
 			
-			gameLayer = new Main();
+			gameLayer = new Game();
 			addChild(gameLayer);
 			
 			trace("StartGame");

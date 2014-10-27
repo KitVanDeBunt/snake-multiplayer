@@ -1,13 +1,7 @@
 package snake.game
 {
+	import starling.display.Shape;
 	import starling.display.Sprite;
-	import flash.display.Sprite;
-	import flash.display.Graphics;
-	import flash.display.Stage;
-	import flash.events.DRMCustomProperties;
-	import flash.events.Event;
-	import flash.display.StageDisplayState;
-	import flash.display.StageScaleMode;
 	import flash.geom.Vector3D;
 	
 	/**
@@ -19,7 +13,7 @@ package snake.game
 	{
 		public var Id:int;
 		
-		public var square:Sprite;
+		public var square:Shape;
 		public var squares:Array = new Array();
 		public var lastPos:Vector3D;
 		public var pressed:Boolean = false;
@@ -33,7 +27,7 @@ package snake.game
 		public function DrawSnake(PosX:int, PosY:int, length:int):void 
 		{
 			for (var i:int = 0; i < length; i++) {
-				square = new Sprite();
+				square = new Shape();
 				square.graphics.beginFill(0x000000);
 				square.graphics.drawRect(PosX + (11*i),PosY,10,10);
 				square.graphics.endFill();
@@ -58,7 +52,7 @@ package snake.game
 					lastPos.x = lastPos.x -= 11;
 					break;
 			}
-			square = new Sprite();
+			square = new Shape();
 			square.graphics.beginFill(0x000000);
 			square.graphics.drawRect(lastPos.x,lastPos.y,10,10);
 			square.graphics.endFill();
@@ -83,7 +77,7 @@ package snake.game
 					lastPos.x = lastPos.x -= 11;
 					break;
 			}
-			square = new Sprite();
+			square = new Shape();
 			square.graphics.beginFill(0x000000);
 			square.graphics.drawRect(lastPos.x, lastPos.y, 10, 10);
 			square.graphics.endFill();

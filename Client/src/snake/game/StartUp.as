@@ -3,7 +3,7 @@ package snake.game {
 	import flash.display.Sprite;
 	import starling.core.Starling;
 	import snake.Main;
-	import snake.game.Main;
+	import snake.game.Game;
 	//[SWF(width="400", height="300", frameRate="60", backgroundColor="#ffffff")]
 	public class StartUp extends Sprite
 	{
@@ -11,7 +11,7 @@ package snake.game {
 		
 		public function StartUp():void
 		{
-			_starling = new Starling(Main, stage);
+			_starling = new Starling(Game, stage);
 			_starling.start();
 			trace("start");
 		}
