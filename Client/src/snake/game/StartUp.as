@@ -1,5 +1,5 @@
 
-package snake {
+package snake.game {
 	import flash.display.Sprite;
 	import starling.core.Starling;
 	import snake.Main;
