@@ -40,10 +40,10 @@ package snake.game
 			{
 				player = new Block();
 				randomX = Math.floor(Math.random()/2 * gameWidth / 11)*11;
-				randomY = Math.floor(Math.random() * gameHeight/11)*11;
+				randomY = Math.floor(Math.random() * gameHeight / 11) * 11;
+				player.Id = i;
 				player.DrawSnake(randomX, randomY, 8);
 				addChild(player);
-				player.Id = i;
 				players.push(player);
 			}
 			

@@ -3,6 +3,7 @@ package snake.game
 	import starling.display.Shape;
 	import starling.display.Sprite;
 	import flash.geom.Vector3D;
+	import starling.utils.Color;
 	
 	/**
 	 * ...
@@ -19,6 +20,8 @@ package snake.game
 		public var pressed:Boolean = false;
 		
 		public var moveDir:int = 2;
+		
+		private var color:uint;
 		//1 = up
 		//2 = right
 		//3 = down
@@ -28,13 +31,26 @@ package snake.game
 		{
 			for (var i:int = 0; i < length; i++) {
 				square = new Shape();
-				square.graphics.beginFill(0x000000);
+				square.graphics.beginFill(checkColor(Id));
 				square.graphics.drawRect(PosX + (11*i),PosY,10,10);
 				square.graphics.endFill();
 				addChild(square);
 				squares.push(square);
 				lastPos = new Vector3D(PosX + (11*i), PosY, length, 0);
 			}
+		}
+		
+		private function checkColor ( Id:int): uint {
+			if (Id == 0) {
+				color = 0xFF0000;
+			}
+			if (Id == 1) {
+				color = 0x00FF00;
+			}
+			if (Id == 2) {
+				color = 0x0000FF;
+			}
+			return color
 		}
 		
 		public function addBlock():void {
@@ -53,7 +69,7 @@ package snake.game
 					break;
 			}
 			square = new Shape();
-			square.graphics.beginFill(0x000000);
+			square.graphics.beginFill(checkColor(Id));
 			square.graphics.drawRect(lastPos.x,lastPos.y,10,10);
 			square.graphics.endFill();
 			addChild(square);
@@ -78,7 +94,7 @@ package snake.game
 					break;
 			}
 			square = new Shape();
-			square.graphics.beginFill(0x000000);
+			square.graphics.beginFill(checkColor(Id));
 			square.graphics.drawRect(lastPos.x, lastPos.y, 10, 10);
 			square.graphics.endFill();
 			addChild(square);
