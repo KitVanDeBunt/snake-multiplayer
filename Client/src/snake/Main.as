@@ -80,8 +80,9 @@ package snake {
 		{
 			trace("button Connect Pressed Name:"+event.data.name);
 			//con.Ping();
-			con.socket.addEventListener(Event.CONNECT,OnConnect);
+			
 			con.Connect(event.data.name, event.data.ip);
+			con.socket.addEventListener(Event.CONNECT,OnConnect);
 		}
 		
 		private function OnButtonPing( event:starling.events.Event ):void

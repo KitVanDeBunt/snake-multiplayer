@@ -6,7 +6,7 @@
 #include "Enums.h"
 #include <vector>
 #include "ByteConvert.h"
-
+#include "Settings.h"
 
 using std::cout;
 using std::endl;
@@ -25,7 +25,7 @@ Server::~Server(void)
 void Server::Init(ConSettings settings){
 	Connector::Init(settings);
 	printf("Server Started Port: %d\n",settings.port);
-	peer->Start(getServerPort(),settings.maxPlayers);
+	peer->Start(getServerPort(),settings.maxPlayers,settings.maxPlayers);
 	isServer = true;
 }
 
@@ -35,6 +35,14 @@ void Server::Loop(){
 		SystemAddress addresClient = peer->HasNewIncomingConnection();
 		if(addresClient!=UNASSIGNED_SYSTEM_ADDRESS){
 			std::cout << "[Client Connected]: "<<addresClient.ToString() <<std::endl;
+			std::cout << "[Client Connected]: client count: " << peer->GetConnectionCount() <<std::endl;
+			//std::cout << "[Client Connected]: client count: " <<  <<std::endl;
+			SystemAddress  iplist[Settings::maxPlayers];
+			unsigned short numberofSystems;
+			peer->GetConnectionList(iplist,&numberofSystems);
+			for(unsigned short i = 0;i<numberofSystems;i++){
+				std::cout << "[Client Connected]: client " << i << ":" << iplist[i].ToString() <<std::endl;
+			}
 			playersManager.AddPlayer(addresClient);
 			SendPlayerList();
 			printf("\n");
@@ -45,6 +53,7 @@ void Server::Loop(){
 	while(1){
 		SystemAddress addresClient = peer->HasLostConnection();
 		if(addresClient!=UNASSIGNED_SYSTEM_ADDRESS){
+			peer->CloseConnection(addresClient);
 			std::cout << "[Client DisConnected]: "<<addresClient.ToString() <<std::endl;
 			playersManager.RemovePlayer(addresClient);
 			SendPlayerList();
@@ -63,6 +72,8 @@ void Server::ExecuteMessage(MessageType messageType,int messageLength,SystemAddr
 	{
 	case MessageType::Ping:
 		this->Connector::PingBack(pack->systemAddress);
+		std::cout << "[Client Count]: "<< peer->GetConnectionCount() << std::endl;
+		//std::cout << "[Client Count]: "<< peer->GetConnectionList(<< std::endl;
 		break;
 	case MessageType::PLAYER_SET_NAME:
 		data = pack->data;
@@ -210,6 +221,6 @@ void Server::SendPlayerID(SystemAddress addres){
 	ByteConverter::PushIntToUnsignedCharArray(message,0,6);
 	message[4]=(unsigned char)(MessageType::PLAYER_SET_ID);
 	message[5]=(playersManager.GetPlayer(addres)->id());
-	peer->Send((const char *)message, 6,addres,true);
+	peer->Send((const char *)message, 6,addres,false);
 	printf("\n");
 }

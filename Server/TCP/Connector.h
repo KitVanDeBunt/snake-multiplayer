@@ -23,6 +23,7 @@ protected:
 	TCPInterface *peer;
 	bool isServer;
 	Packet *pack;
+	ConSettings settings_;
 public:
 	Connector(void);
 	~Connector(void);

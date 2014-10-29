@@ -16,6 +16,7 @@ Connector::~Connector(void)
 }
 
 void Connector::Init(ConSettings settings){
+	settings_  = settings;
 	serverPort = settings.port;
 	peer = TCPInterface::GetInstance();
 }

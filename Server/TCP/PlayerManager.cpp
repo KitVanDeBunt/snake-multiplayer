@@ -61,14 +61,14 @@ bool PlayerManager::GetPlayersReady(){
 
 unsigned char PlayerManager::GetFirstUnUsedId(){
 	for(unsigned char i = 0;i<256;i++){
-		bool idFound = false;
+		bool iIsUsed = false;
 		for(unsigned int j = 0;j<playerCount;j++){
 			if(players[j].id()==i){
+				iIsUsed = true;
 				break;
 			}
-			idFound = true;
 		}
-		if(idFound){
+		if(!iIsUsed){
 			printf( "[GetFirstUnUsedId] id: %u \n",i);
 			return i;
 			break;

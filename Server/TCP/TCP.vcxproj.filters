@@ -538,6 +538,9 @@
     <ClInclude Include="PolicyServer.h">
       <Filter>net\polecyServer</Filter>
     </ClInclude>
+    <ClInclude Include="Settings.h">
+      <Filter>net\Server</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\RakNet\Source\_FindFirst.cpp">

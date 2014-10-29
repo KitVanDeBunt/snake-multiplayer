@@ -10,6 +10,7 @@
 #include "RakSleep.h"
 #include "iostream"
 #include "ByteConvert.h"
+#include "Settings.h"
 
 char str[512];
 Connector* con;
@@ -17,7 +18,6 @@ Connector* policyServer;
 
 const int SERVER_PORT = 11100;
 const int POLICY_SERVER_PORT = 843;
-int maxPlayers = 32;
 
 void WaitForEnter(void) { 
 	printf("Press Enter to continue: "); 
@@ -83,7 +83,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	} else {
 		con = new Server();
 		conSettings.port = SERVER_PORT;
-		conSettings.maxPlayers = maxPlayers;
+		conSettings.maxPlayers = Settings::maxPlayers;
 		//policyServer = new PolicyServer();
 		//policyServer->Init(POLICY_SERVER_PORT);
 		

@@ -45,6 +45,7 @@ package snake.menu.screens
 		}
 		
 		private function BuildButtons():void {
+			Main.debug.print("[build buttons]",Debug.Menu_1);
 			if(buttonGroup ==null){
 				buttonGroup = new ButtonGroup();
 				addChild(buttonGroup);
@@ -68,6 +69,7 @@ package snake.menu.screens
 			buttonGroup.dataProvider = menuConected;
 		}
 		private function BuildPlayerList():void {
+			Main.debug.print("[build player list]",Debug.Menu_1);
 			BuildButtons();
 			
 			var items:Array = [];
@@ -79,20 +81,23 @@ package snake.menu.screens
 			playerList = new List();
 			var items:Array = [];
 			if (playerList != null) {
-				for(var i:int = 0; i < PlayerList.players.length; i++)
+				for(var i:int = 0; i < PlayerList.playerCount; i++)
 				{
 					
-					player = PlayerList.players[i];
-					if (player.id == PlayerList.playerID) {
+					player = PlayerList.player(i);
+					/*if (player.id == PlayerList.playerID) {
 						player = PlayerList.player;
-					}
+					}*/
 					showingTxt = player.name;
-					
 					if (player.isReady){
-						showingTxt += ("(Ready)"+" id:"+PlayerList.players[i].id);
+						showingTxt += ("(Ready)");
 					}
 					else {
-						showingTxt += ("(Not Ready)"+" id:"+PlayerList.players[i].id);
+						showingTxt += ("(Not Ready)");
+					}
+					showingTxt += (" id:"+PlayerList.player(i).id)
+					if (player.isAdmin){
+						showingTxt += ("(admin)");
 					}
 					var item:Object = {text: showingTxt};
 					items[i] = item;
@@ -125,13 +130,16 @@ package snake.menu.screens
 		private function OnButtonPing(e:Event):void { 		dispatchEventWith( ScreenEvents.PING ) };
 		
 		private function newPlayerList(e:Event):void { 	
-			//Main.debug.print("[Screen] newPlayerList: ", Debug.Server_2);
+			Main.debug.print("[newPlayerList]",Debug.Menu_1);
 			BuildPlayerList();
 		};
 		private function OnButtonPlay(e:Event):void { 		dispatchEventWith( ScreenEvents.PLAY ) };
-		private function OnButtonDisconnect(e:Event):void {	dispatchEventWith( ScreenEvents.DISCONNECT ) };
+		private function OnButtonDisconnect(e:Event):void {	
+			Main.eventManager.removeEventListener(ScreenEvents.NEW_PLAYERLIST, newPlayerList);
+			dispatchEventWith( ScreenEvents.DISCONNECT ) 
+		};
 		private function OnButtonReady(e:Event):void {	
-			con.SendPlayerReady(!PlayerList.player.isReady);
+			con.SendPlayerReady(!PlayerList.thisPlayer.isReady);
 		}
 	}
 

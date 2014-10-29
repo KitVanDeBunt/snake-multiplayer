@@ -250,6 +250,7 @@
     <ClInclude Include="PlayerManager.h" />
     <ClInclude Include="PolicyServer.h" />
     <ClInclude Include="Server.h" />
+    <ClInclude Include="Settings.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>

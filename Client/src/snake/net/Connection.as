@@ -55,12 +55,13 @@ package snake.net
 				if (key != CreateKey) {
 					throw new Error("Creation of Conection without calling GetInstance is not valid");
 				}
-				createSocket();
+				
 			}
 			
 			public static function GetInstance():Connection {
 				if (_instance == null) {
 					_instance = new Connection(CreateKey);
+					Main.debug.print("[new instance]!!!!!!!!!!!!!!!!!!!!!!!!!",Debug.Server_2);
 				}
 				return _instance;
 			}
@@ -71,7 +72,9 @@ package snake.net
 			}
 			
 			public function Connect(name:String, ip:String = address):void {
+				createSocket();
 				
+				trace("connected:" + socket_.connected);
 				socket_.connect(ip, port);
 				
 				clientName = name;
@@ -81,7 +84,7 @@ package snake.net
 			}
 			
 			public function DisConnect():void {
-				if(socket_.connected){
+				if (socket_.connected) {
 					socket_.close();
 					socket_.dispatchEvent(new Event(Event.CLOSE));
 					Main.debug.print(("[State]DisConnect"), Debug.Server_2);
@@ -136,7 +139,9 @@ package snake.net
 			}
 			
 			private function onConnected(e:Event):void {
+				Main.debug.print("[------------------------------------------]",Debug.Server_2);
 				Main.debug.print("client - socket connected",Debug.Server_2);
+				Main.debug.print("[------------------------------------------]",Debug.Server_2);
 				
 				SendPlayerSetName(clientName);
 			}
@@ -256,7 +261,7 @@ package snake.net
 			private function ProcessPlayerList(_bytes:ByteArray):void {
 				
 				var listLength:int = _bytes.readInt();
-				PlayerList.players = new Vector.<Player>();
+				PlayerList.Init();
 				Main.debug.print(("[Set Player List] Length:" + listLength) , Debug.Server_2);
 				
 				var nameL:int;
@@ -277,7 +282,7 @@ package snake.net
 						name = name+newLLetter ;
 					}
 					
-					PlayerList.players.push(new Player(name,dir,id));
+					PlayerList.add(new Player(name,dir,id));
 					Main.debug.print(("[Set Player List] Player: " + name + " ID: " + id) , Debug.Server_2);	
 				}
 				Main.eventManager.dispatchEvent(new starling.events.Event( ScreenEvents.NEW_PLAYERLIST ));
@@ -297,12 +302,12 @@ package snake.net
 					data.push(new Player("", dir, id));
 				}
 				
-				for (var j:int = 0; j < PlayerList.players.length; j++) 
+				for (var j:int = 0; j < PlayerList.playerCount; j++) 
 				{
 					for (var k:int = 0; k < data.length; k++) 
 					{
-						if (PlayerList.players[j].id == data[k].id) {
-							PlayerList.players[j].dir = data[k].dir;
+						if (PlayerList.player(j).id == data[k].id) {
+							PlayerList.player(j).dir = data[k].dir;
 							return;
 						}
 					}
@@ -314,10 +319,9 @@ package snake.net
 				var data:Vector.<Object> = new Vector.<Object>();
 				
 				var obj:Object;
+				obj = new Object();
 				for (var i:int = 0; i < listLength; i++) 
 				{
-					obj = new Object();
-					
 					obj.id = _bytes.readByte();
 					obj.ready = _bytes.readBoolean();
 					
@@ -326,10 +330,10 @@ package snake.net
 				
 				for (var j:int = 0; j < data.length; j++) 
 				{
-					for (var k:int = 0; k < PlayerList.players.length; k++) 
+					for (var k:int = 0; k < PlayerList.playerCount; k++) 
 					{
-						if (data[j].id == PlayerList.players[k].id) {
-							PlayerList.players[k].isReady = data[j].ready;
+						if (data[j].id == PlayerList.player(k).id) {
+							PlayerList.player(k).isReady = data[j].ready;
 						}
 					}
 				}
@@ -338,7 +342,12 @@ package snake.net
 			
 			private function ProcessPlayerIsAdmin(_bytes:ByteArray):void {
 				PlayerList.adminID = _bytes.readByte();
-				Main.debug.print("[ProcessPlayerIsAdmin] idAdmin: " + PlayerList.adminID, Debug.Server_2);
+				
+				Main.debug.print("[ProcessPlayerIsAdmin] Admin    : " + PlayerList.isAdmin, Debug.Server_2);
+				Main.debug.print("[ProcessPlayerIsAdmin] idAdmin  : " + PlayerList.adminID, Debug.Server_2);
+				Main.debug.print("[ProcessPlayerIsAdmin] playerid : " + PlayerList.playerID, Debug.Server_2);
+				
+				
 				Main.eventManager.dispatchEvent(new starling.events.Event( ScreenEvents.NEW_PLAYERLIST ));
 				//playerId = true;
 				//Main.debug.print(("[playerIsAdmin]: "+playerSelf.isAdmin+" id:"+playerSelf.id+" idAdminID:"+idAdmin) , Debug.Server_2);
@@ -360,7 +369,7 @@ package snake.net
 			public function SendPlayerReady(value:Boolean = false):void {
 				//send bool player ready to server
 				
-				PlayerList.player.isReady = value;
+				PlayerList.thisPlayer.isReady = value;
 				
 				var messageLength:int = 6;
 				

@@ -26,6 +26,7 @@ package snake.utils.debug {
 		
 		public static const Server_1:String = "Server_1";
 		public static const Server_2:String = "Server_2";
+		public static const Menu_1:String = "Menu_1";
 		private static const OFF:String = "off";
 		//private static var USER:Vector.<String> = new <String>[Kit,ALL,Kit_Draw_Objects,Kit_bounce];
 		private static var USER:Vector.<String> = new <String>[Server_2]; 
