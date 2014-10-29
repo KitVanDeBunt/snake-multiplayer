@@ -57,6 +57,7 @@ void Server::Loop(){
 			std::cout << "[Client DisConnected]: "<<addresClient.ToString() <<std::endl;
 			playersManager.RemovePlayer(addresClient);
 			SendPlayerList();
+			SendPlayerIsAdmin();
 			printf("\n");
 		}else{
 			break;
@@ -92,6 +93,7 @@ void Server::ExecuteMessage(MessageType messageType,int messageLength,SystemAddr
 		SendPlayerList();
 		SendPlayerID(caller);
 		SendPlayerIsAdmin();
+		SendPlayerListUpdate();
 		break;
 	case MessageType::PLAYER_SET_NEW_DIRECTION:
 
@@ -99,8 +101,10 @@ void Server::ExecuteMessage(MessageType messageType,int messageLength,SystemAddr
 	case MessageType::PLAYER_READY:
 		data = pack->data;
 		if(data[5]==1){
+			printf("[Recieve Player Ready]:true\n");
 			playersManager.SetPlayerReady(true,caller);
 		}else if(data[5]==0){
+			printf("[Recieve Player Ready]:false\n");
 			playersManager.SetPlayerReady(false,caller);
 		}else{
 			printf("[Error]PLAYER_READY WHY NO BOOL?");

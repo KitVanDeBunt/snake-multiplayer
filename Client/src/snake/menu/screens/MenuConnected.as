@@ -89,15 +89,22 @@ package snake.menu.screens
 						player = PlayerList.player;
 					}*/
 					showingTxt = player.name;
+					if (player.id == PlayerList.playerID) {
+						showingTxt += ("(ME)");
+					}else {
+						showingTxt += ("(00)");
+					}
 					if (player.isReady){
-						showingTxt += ("(Ready)");
+						showingTxt += ("(    Ready)");
 					}
 					else {
 						showingTxt += ("(Not Ready)");
 					}
-					showingTxt += (" id:"+PlayerList.player(i).id)
+					showingTxt += (" id:"+PlayerList.player(i).id+" ")
 					if (player.isAdmin){
-						showingTxt += ("(admin)");
+						showingTxt += "(admin)";
+					}else {
+						showingTxt += "(no admin)";
 					}
 					var item:Object = {text: showingTxt};
 					items[i] = item;
@@ -138,7 +145,7 @@ package snake.menu.screens
 			Main.eventManager.removeEventListener(ScreenEvents.NEW_PLAYERLIST, newPlayerList);
 			dispatchEventWith( ScreenEvents.DISCONNECT ) 
 		};
-		private function OnButtonReady(e:Event):void {	
+		private function OnButtonReady(e:Event):void {
 			con.SendPlayerReady(!PlayerList.thisPlayer.isReady);
 		}
 	}

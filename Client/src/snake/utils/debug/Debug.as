@@ -29,7 +29,7 @@ package snake.utils.debug {
 		public static const Menu_1:String = "Menu_1";
 		private static const OFF:String = "off";
 		//private static var USER:Vector.<String> = new <String>[Kit,ALL,Kit_Draw_Objects,Kit_bounce];
-		private static var USER:Vector.<String> = new <String>[Server_2]; 
+		private static var USER:Vector.<String> = new <String>[Server_2,Menu_1]; 
 		
 		private var parentDisplayObjectContainer_:DisplayObjectContainer;
 		private var textFields:Vector.<TextField>;

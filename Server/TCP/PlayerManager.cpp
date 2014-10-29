@@ -12,6 +12,7 @@ using std::string;
 
 PlayerManager::PlayerManager(void)
 {
+	currentAdminId_ = -1;
 	playerCount = 0;
 }
 
@@ -26,6 +27,15 @@ Player * PlayerManager::GetPlayer(SystemAddress addres){
 			return (&players[i]);
 		}
 	}
+	return NULL;
+}
+Player * PlayerManager::GetPlayer(unsigned char id){
+	for(unsigned int i = 0;i<playerCount;i++){
+		if(players[i].id()==id){
+			return (&players[i]);
+		}
+	}
+	return NULL;
 }
 string PlayerManager::GetPlayerName(SystemAddress addres){
 	return GetPlayer(addres)->getName();
@@ -77,6 +87,31 @@ unsigned char PlayerManager::GetFirstUnUsedId(){
 }
 
 unsigned char PlayerManager::CurrentAdminId(){
+	bool newAdmin = false;
+	if((playerCount > 0)){
+		if(currentAdminId_== -1){
+			newAdmin = true;
+			printf("[CurrentAdminId]01\n");
+		}else if(GetPlayer(currentAdminId_) == NULL){
+			newAdmin = true;
+			printf("[CurrentAdminId]02\n");
+		}/*else if((playerCount > 1)&&GetPlayer(currentAdmdinAddres_)->id()!=currentAdminId_){
+			newAdmin = true;
+			printf("[CurrentAdminId]03\n");
+		}*/
+		if(newAdmin){
+			unsigned char newAdminId = PlayerManager::NewAdminId();
+			currentAdminId_ = newAdminId;
+			currentAdmdinAddres_ = GetPlayer(newAdminId)->getAddres();
+		}
+	}else{
+		printf("[CurrentAdminId] no players\n");
+	}
+	return currentAdminId_;
+}
+
+unsigned char PlayerManager::NewAdminId(){
+	printf("[NEW Admin ID]\n");
 	int lowestId = 256;
 	for(unsigned int j = 0;j<playerCount;j++){
 		if(players[j].id()<lowestId){

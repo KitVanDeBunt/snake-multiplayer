@@ -49,6 +49,13 @@ package snake.net
 		}
 		public static function set adminID(id:int):void {
 			adminId_ = id;
+			for (var i:int = 0; i < players.length; i++) {
+				if(players[i].id == adminId_){
+					players[i].isAdmin = true;
+				}else {
+					players[i].isAdmin = false;
+				}
+			}
 		}
 		public static function get isAdmin():Boolean {
 			if (adminId_ == -1) {

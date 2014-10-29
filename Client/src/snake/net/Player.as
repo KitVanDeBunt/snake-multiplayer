@@ -1,5 +1,7 @@
 package snake.net 
 {
+	import snake.Main;
+	import snake.utils.debug.Debug;
 	/**
 	 * ...
 	 * @author Kit van de Bunt
@@ -9,7 +11,7 @@ package snake.net
 		public var name:String;
 		public var dir:int;
 		public var id:int;
-		public var isAdmin:Boolean;
+		private var isAdmin_:Boolean;
 		public var isReady:Boolean;
 		
 		public function Player(_name:String , _dir:int, _id:int) 
@@ -19,6 +21,15 @@ package snake.net
 			id = _id;
 		}
 		
+		public function get isAdmin ():Boolean {
+			return isAdmin_;
+		}
+		
+		
+		public function set isAdmin (newIsAdmin:Boolean):void {
+			Main.debug.print("[set is admin]", Debug.Server_2);
+			isAdmin_= newIsAdmin;
+		}
 	}
 
 }

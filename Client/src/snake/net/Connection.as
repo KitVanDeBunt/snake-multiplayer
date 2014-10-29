@@ -316,24 +316,23 @@ package snake.net
 			
 			private function ProcessPlayerListUpdate(_bytes:ByteArray):void {
 				var listLength:int = _bytes.readInt();
-				var data:Vector.<Object> = new Vector.<Object>();
+				var listId:Vector.<int> = new Vector.<int>();
+				var listReady:Vector.<Boolean> = new Vector.<Boolean>();
 				
 				var obj:Object;
-				obj = new Object();
+				
 				for (var i:int = 0; i < listLength; i++) 
 				{
-					obj.id = _bytes.readByte();
-					obj.ready = _bytes.readBoolean();
-					
-					data.push(obj);
+					listId.push(_bytes.readByte());
+					listReady.push(_bytes.readBoolean());
 				}
 				
-				for (var j:int = 0; j < data.length; j++) 
+				for (var j:int = 0; j < listId.length; j++) 
 				{
 					for (var k:int = 0; k < PlayerList.playerCount; k++) 
 					{
-						if (data[j].id == PlayerList.player(k).id) {
-							PlayerList.player(k).isReady = data[j].ready;
+						if (listId[j] == PlayerList.player(k).id) {
+							PlayerList.player(k).isReady = listReady[j];
 						}
 					}
 				}
@@ -366,10 +365,10 @@ package snake.net
 				var dir:int = _bytes.readByte();
 			}
 			
-			public function SendPlayerReady(value:Boolean = false):void {
+			public function SendPlayerReady(value:Boolean):void {
 				//send bool player ready to server
 				
-				PlayerList.thisPlayer.isReady = value;
+				//PlayerList.thisPlayer.isReady = value;
 				
 				var messageLength:int = 6;
 				
@@ -379,6 +378,7 @@ package snake.net
 				bytes.writeInt(messageLength);
 				bytes.writeByte(MessageType.PLAYER_READY);
 				
+				Main.debug.print(("SendPlayerReady:" + value), Debug.Server_2);
 				if (value)
 				{
 					bytes.writeByte(1);

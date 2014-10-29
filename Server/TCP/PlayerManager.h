@@ -6,7 +6,9 @@ class PlayerManager
 private:
 	Player *players;
 	int playerCount;
-	
+	unsigned char NewAdminId ();
+	int currentAdminId_;
+	SystemAddress currentAdmdinAddres_;
 public:
 	PlayerManager(void);
 	~PlayerManager(void);
@@ -22,6 +24,7 @@ public:
 	string GetPlayerName(SystemAddress addres);
 
 	Player * GetPlayer(SystemAddress addres);
+	Player * GetPlayer(unsigned char id);
 	Player * GetPlayers ()const{return players;};
 	int GetPlayerCount ()const{return playerCount;};
 	unsigned char CurrentAdminId ();
