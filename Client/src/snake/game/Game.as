@@ -15,11 +15,13 @@ package snake.game
 	 
 	public class Game extends Sprite 
 	{
-		private var playerAmount:int = 2;
+		private var playerAmount:int = 1;
 		private var moveTime:int = 3;
-		private var gameWidth:int = 792;
-		private var gameHeight:int = 792;
+		private var amountOfLines:int = 40;
+		private var gridSnap:int = 11;
 		
+		private var gameWidth:int;
+		private var gameHeight:int;
 		private var pickUp:PickUp;
 		private var player:Block;
 		private var players:Array = new Array();
@@ -36,13 +38,15 @@ package snake.game
 		}
 		
 		private function startGame():void {
+			gameWidth = amountOfLines * gridSnap;
+			gameHeight = amountOfLines * gridSnap;
 			for (var i:int = 0; i < playerAmount; i++) 
 			{
 				player = new Block();
-				randomX = Math.floor(Math.random()/2 * gameWidth / 11)*11;
-				randomY = Math.floor(Math.random() * gameHeight / 11) * 11;
+				randomX = Math.floor(Math.random()/2 * amountOfLines)* (gameWidth/amountOfLines);
+				randomY = Math.floor(Math.random() * amountOfLines)* (gameHeight/amountOfLines);
 				player.Id = i;
-				player.DrawSnake(randomX, randomY, 8);
+				player.DrawSnake(randomX, randomY, 4);
 				addChild(player);
 				players.push(player);
 			}
@@ -91,8 +95,8 @@ package snake.game
 			{
 			pickUp = new PickUp;
 			addChild(pickUp);
-			randomX = Math.floor(Math.random() * gameWidth/11)*11;
-			randomY = Math.floor(Math.random() * gameHeight/11)*11;
+			randomX = Math.floor(Math.random() * amountOfLines)*(gameWidth/amountOfLines);
+			randomY = Math.floor(Math.random() * amountOfLines)*(gameHeight/amountOfLines);
 			if (randomX == 0 && randomY == 0 ||
 				randomX == gameWidth && randomY == 0 ||
 				randomX == 0 && randomY == gameHeight ||
@@ -104,6 +108,7 @@ package snake.game
 				pickUp.addPickUp(randomX, randomY);
 				pickUps.push(pickUp);
 			}
+			trace(randomX + " " + randomY);
 		}
 	}
 		
@@ -160,20 +165,20 @@ package snake.game
 						trace("Player " + i + " has picked up a block and is now " + players[i].squares.length + " blocks long");
 					}
 				}
-				for each (var item:Block in players) 
-				{
-					for (var j:int = 0; j < item.squares.length; j++) 
+		//		for each (var item:Block in players) 
+			//	{
+					for (var j:int = 0; j < players[i].squares.length; j++) 
 					{
-						if (intersectsTest(players[i].square,item.squares[j]))
+						if (intersectsTest(players[i].square,players[i].squares[j]))
 						{
-							if (players[i].square != item.squares[j])
+							if (players[i].square != players[i].squares[j])
 							{
 								ResetGame();
-								trace("Player " + i + " hitted player " + item.Id);
+								trace("Player " + i + " hitted player " + players[i].Id);
 							}
 						}
 					}
-				}
+			//	}
 				if (players[i].lastPos.x < 0 || players[i].lastPos.x >= gameWidth ||
 					players[i].lastPos.y < 0 || players[i].lastPos.y > gameHeight)
 					{
