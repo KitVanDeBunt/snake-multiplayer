@@ -43,8 +43,8 @@ package snake.game
 			for (var i:int = 0; i < playerAmount; i++) 
 			{
 				player = new Block();
-				randomX = Math.floor(Math.random()/2 * amountOfLines)* (gameWidth/amountOfLines);
-				randomY = Math.floor(Math.random() * amountOfLines)* (gameHeight/amountOfLines);
+				randomX = Math.floor(Math.random()/2 * amountOfLines)* gridSnap;
+				randomY = Math.floor(Math.random() * amountOfLines)* gridSnap;
 				player.Id = i;
 				player.DrawSnake(randomX, randomY, 4);
 				addChild(player);
