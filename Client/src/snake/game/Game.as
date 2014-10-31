@@ -1,6 +1,8 @@
 package snake.game 
 {
+	import starling.core.Starling;
 	import starling.display.Sprite;
+	import starling.events.EnterFrameEvent;
 	import starling.events.Event;
 	import starling.display.Stage;
 	import starling.display.DisplayObjectContainer;
@@ -15,7 +17,7 @@ package snake.game
 	 
 	public class Game extends Sprite 
 	{
-		private var playerAmount:int = 1;
+		private var playerAmount:int = 2;
 		private var moveTime:int = 3;
 		private var amountOfLines:int = 40;
 		private var gridSnap:int = 11;
@@ -31,13 +33,40 @@ package snake.game
 		private var randomY:Number;
 		private var reset:Boolean = false;
 		private var switchone:Boolean = true;
+		private var countDownIndex:int = 0;
 		
 		public function Game() {
 			//stage.scaleMode = StageScaleMode.EXACT_FIT;
-			startGame();
+			menu();
+		}
+		
+		private function menu():void {
+			addEventListener(KeyboardEvent.KEY_DOWN, startCountDown);
+		}
+		
+		private function startCountDown(e:KeyboardEvent):void {
+			trace("3!");
+			addEventListener(EnterFrameEvent.ENTER_FRAME, countDown);
+			removeEventListener(KeyboardEvent.KEY_DOWN, startCountDown);
+		}
+		
+		private function countDown(e:Event):void {
+			countDownIndex++
+			if (countDownIndex / 30 == 1) {
+				trace("2!");
+			}
+			if (countDownIndex / 30 == 2) {
+				trace("1!");
+			}
+			if (countDownIndex / 30 == 3) {
+				startGame();
+			}
 		}
 		
 		private function startGame():void {
+			removeEventListener(EnterFrameEvent.ENTER_FRAME, countDown);
+			countDownIndex = 0;
+			removeEventListener(KeyboardEvent.KEY_DOWN, startGame);
 			gameWidth = amountOfLines * gridSnap;
 			gameHeight = amountOfLines * gridSnap;
 			for (var i:int = 0; i < playerAmount; i++) 
@@ -50,15 +79,16 @@ package snake.game
 				addChild(player);
 				players.push(player);
 			}
-			
-			addPickUp(4);
-			
 			addEventListener(Event.ENTER_FRAME, Update);
 			addEventListener(KeyboardEvent.KEY_DOWN, Control);
 		}
 		
 		private function Update(e:Event):void {
 			timer += 1;
+			if (pickUps.length == 0)
+			{
+				addPickUp(4);
+			}
 			if (timer >= moveTime){
 				if (reset == false) {
 					for each (var item:Block in players) 
@@ -69,10 +99,6 @@ package snake.game
 					checkColl();
 					timer = 0;
 				}
-			}
-			if (pickUps.length == 0)
-			{
-				addPickUp(4);
 			}
 		}
 		
@@ -87,7 +113,7 @@ package snake.game
 			}
 			players.splice(0,playerAmount);
 			pickUps.splice(0, pickUps.length);
-			startGame();
+			menu();
 		}
 		
 		private function addPickUp(Amount:int):void {
@@ -182,7 +208,8 @@ package snake.game
 				if (players[i].lastPos.x < 0 || players[i].lastPos.x >= gameWidth ||
 					players[i].lastPos.y < 0 || players[i].lastPos.y > gameHeight)
 					{
-					ResetGame();
+					removeEventListener(Event.ENTER_FRAME, Update);
+						ResetGame();
 				}
 			}
 		}
