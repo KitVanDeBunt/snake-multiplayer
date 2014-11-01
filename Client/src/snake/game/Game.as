@@ -9,6 +9,10 @@ package snake.game
 	import starling.events.KeyboardEvent;
 	import snake.menu.ScreenEvents;
 	import snake.Main;
+	import feathers.data.ListCollection;
+	import starling.display.Shape;
+	import flash.geom.Vector3D;
+	import starling.utils.Color;
 	
 	/**
 	 * ...
@@ -36,24 +40,28 @@ package snake.game
 		private var reset:Boolean = false;
 		private var switchone:Boolean = true;
 		private var countDownIndex:int = 0;
+		private var wall:Shape;
+		private var wallWidth:int = 20;
 		
 		public function Game() {
-			//stage.scaleMode = StageScaleMode.EXACT_FIT;
-			menu();
-		}
-		
-		private function menu():void {
-			//Main.eventManager.addEventListener(ScreenEvents.NEW_PLAYERLIST, startCountDown);
-			addEventListener(KeyboardEvent.KEY_DOWN, startCountDown);
-		}
-		
-		private function startCountDown(e:KeyboardEvent):void {
-			trace("3!");
+			addEventListener(ScreenEvents.NEW_PLAYERLIST , menu);
 			addEventListener(EnterFrameEvent.ENTER_FRAME, countDown);
-			removeEventListener(KeyboardEvent.KEY_DOWN, startCountDown);
+			//stage.scaleMode = StageScaleMode.EXACT_FIT;
 		}
 		
-		private function countDown(e:Event):void {
+		private function menu(e:ScreenEvents):void {
+			//show players or connect or whatever
+			removeEventListener(ScreenEvents.NEW_PLAYERLIST, menu);
+			addEventListener(ScreenEvents.PLAY , startCountDown);
+		}
+		
+		private function startCountDown(e:ScreenEvents):void {
+			trace("3!");
+			//addEventListener(EnterFrameEvent.ENTER_FRAME, countDown);
+			removeEventListener(ScreenEvents.PLAY, startCountDown);
+		}
+		
+		private function countDown():void {
 			countDownIndex++
 			if (countDownIndex / 30 == 1) {
 				trace("2!");
@@ -82,6 +90,7 @@ package snake.game
 				addChild(player);
 				players.push(player);
 			}
+			drawWall();
 			addEventListener(Event.ENTER_FRAME, Update);
 			addEventListener(KeyboardEvent.KEY_DOWN, Control);
 		}
@@ -105,6 +114,18 @@ package snake.game
 			}
 		}
 		
+		private function resetPlayer(Player:Block, playersIndex:int):void {
+			removeChild(Player);
+			players.slice(playersIndex, 1);
+			player = new Block();
+			randomX = Math.floor(Math.random()/2 * amountOfLines)* gridSnap;
+			randomY = Math.floor(Math.random() * amountOfLines)* gridSnap;
+			player.Id = playersIndex;
+			player.DrawSnake(randomX, randomY, 4);
+			addChild(player);
+			players[playersIndex] = player;
+		}
+		
 		public function ResetGame():void {
 			for each (var player:Block in players) 
 			{
@@ -116,7 +137,6 @@ package snake.game
 			}
 			players.splice(0,playerAmount);
 			pickUps.splice(0, pickUps.length);
-			menu();
 		}
 		
 		private function addPickUp(Amount:int):void {
@@ -196,7 +216,7 @@ package snake.game
 				}
 		//		for each (var item:Block in players) 
 			//	{
-					for (var j:int = 0; j < players[i].squares.length; j++) 
+/*			for (var j:int = 0; j < players[i].squares.length; j++) 
 					{
 						if (intersectsTest(players[i].square,players[i].squares[j]))
 						{
@@ -206,15 +226,30 @@ package snake.game
 								trace("Player " + i + " hitted player " + players[i].Id);
 							}
 						}
-					}
+					}*/
 			//	}
 				if (players[i].lastPos.x < 0 || players[i].lastPos.x >= gameWidth ||
-					players[i].lastPos.y < 0 || players[i].lastPos.y > gameHeight)
+					players[i].lastPos.y < 0 || players[i].lastPos.y >= gameHeight)
 					{
 					removeEventListener(Event.ENTER_FRAME, Update);
-						ResetGame();
+						resetPlayer(players[i], i);
+						break;
 				}
 			}
+		}
+		
+		private function drawWall():void {
+			wall = new Shape;
+			wall.graphics.beginFill(0x000000);
+			wall.graphics.drawRect(gameWidth, 0, wallWidth, gameHeight);
+			wall.graphics.endFill();
+			addChild(wall);
+			
+			wall = new Shape;
+			wall.graphics.beginFill(0x000000);
+			wall.graphics.drawRect(0, gameHeight, gameWidth + wallWidth, wallWidth);
+			wall.graphics.endFill();
+			addChild(wall);
 		}
 		
 		private function intersectsTest(obj1:DisplayObjectContainer,obj2:DisplayObjectContainer):Boolean {
