@@ -114,7 +114,7 @@ package snake.game
 			}
 		}
 		
-		private function resetPlayer(Player:Block, playersIndex:int):void {
+		/*private function resetPlayer(Player:Block, playersIndex:int):void {
 			removeChild(Player);
 			players.slice(playersIndex, 1);
 			player = new Block();
@@ -124,7 +124,7 @@ package snake.game
 			player.DrawSnake(randomX, randomY, 4);
 			addChild(player);
 			players[playersIndex] = player;
-		}
+		}*/
 		
 		public function ResetGame():void {
 			for each (var player:Block in players) 
@@ -232,8 +232,7 @@ package snake.game
 					players[i].lastPos.y < 0 || players[i].lastPos.y >= gameHeight)
 					{
 					removeEventListener(Event.ENTER_FRAME, Update);
-						resetPlayer(players[i], i);
-						break;
+						ResetGame();
 				}
 			}
 		}
