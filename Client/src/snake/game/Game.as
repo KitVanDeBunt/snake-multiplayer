@@ -7,6 +7,8 @@ package snake.game
 	import starling.display.Stage;
 	import starling.display.DisplayObjectContainer;
 	import starling.events.KeyboardEvent;
+	import snake.menu.ScreenEvents;
+	import snake.Main;
 	
 	/**
 	 * ...
@@ -41,6 +43,7 @@ package snake.game
 		}
 		
 		private function menu():void {
+			//Main.eventManager.addEventListener(ScreenEvents.NEW_PLAYERLIST, startCountDown);
 			addEventListener(KeyboardEvent.KEY_DOWN, startCountDown);
 		}
 		
