@@ -17,11 +17,11 @@ package snake.game
 		public var square:Shape;
 		public var squares:Array = new Array();
 		public var lastPos:Vector3D;
-		public var pressed:Boolean = false;
 		
 		public var moveDir:int = 2;
+		public var lastMoveDir:int = 2;
 		
-		private var color:uint;
+		public var color:uint;
 		//1 = up
 		//2 = right
 		//3 = down
@@ -29,6 +29,9 @@ package snake.game
 		 
 		public function DrawSnake(PosX:int, PosY:int, length:int):void 
 		{
+			if (length <= 0) {
+				length = 1;
+			}
 			for (var i:int = 0; i < length; i++) {
 				square = new Shape();
 				square.graphics.beginFill(checkColor(Id));
@@ -38,6 +41,14 @@ package snake.game
 				squares.push(square);
 				lastPos = new Vector3D(PosX + (11*i), PosY, length, 0);
 			}
+		}
+		
+		public function removeSnake():void {
+			for each (var item:Shape in squares) 
+			{
+				removeChild(item);
+			}
+			squares.splice(0, squares.length);
 		}
 		
 		private function checkColor ( Id:int): uint {
@@ -96,6 +107,7 @@ package snake.game
 					lastPos.x = lastPos.x -= 11;
 					break;
 			}
+			lastMoveDir = moveDir;
 			square = new Shape();
 			square.graphics.beginFill(checkColor(Id));
 			//square.graphics.drawRect(lastPos.x, lastPos.y, 10, 10);

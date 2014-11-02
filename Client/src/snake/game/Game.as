@@ -23,7 +23,8 @@ package snake.game
 	 
 	public class Game extends Sprite 
 	{
-		private var playerAmount:int = 1;
+		private var playerAmount:int = 2;
+		private var startLength:int = 4;
 		private var moveTime:int = 3;
 		private var amountOfLines:int = 40;
 		private var gridSnap:int = 11;
@@ -43,10 +44,13 @@ package snake.game
 		private var wallX:Shape;
 		private var wallY:Shape;
 		private var wallWidth:int = 20;
+		private var roundsLeft:int = 3;
+		private var normalPickups:int = 0;
 		
 		public function Game() {
 			addEventListener(ScreenEvents.NEW_PLAYERLIST , menu);
 			trace("3!");
+			startGame();
 			addEventListener(EnterFrameEvent.ENTER_FRAME, countDown);
 			//stage.scaleMode = StageScaleMode.EXACT_FIT;
 		}
@@ -72,7 +76,8 @@ package snake.game
 				trace("1!");
 			}
 			if (countDownIndex / 30 == 3) {
-				startGame();
+				addEventListener(Event.ENTER_FRAME, Update);
+				addEventListener(KeyboardEvent.KEY_DOWN, Control);
 			}
 		}
 		
@@ -88,27 +93,36 @@ package snake.game
 				randomX = Math.floor(Math.random()/2 * amountOfLines)* gridSnap;
 				randomY = Math.floor(Math.random() * amountOfLines)* gridSnap;
 				player.Id = i;
-				player.DrawSnake(randomX, randomY, 4);
+				player.DrawSnake(randomX, randomY, startLength);
 				addChild(player);
 				players.push(player);
 			}
 			drawWall();
-			addEventListener(Event.ENTER_FRAME, Update);
-			addEventListener(KeyboardEvent.KEY_DOWN, Control);
 		}
 		
 		private function Update(e:Event):void {
 			timer += 1;
-			if (pickUps.length == 0)
+			normalPickups = 0;
+			for each (var thing:PickUp in pickUps) 
 			{
-				addPickUp(4);
+				if (thing.id == -1) {
+					normalPickups += 1;
+				}
+			}
+			if (normalPickups == 0) {
+				if(roundsLeft > 0){
+					addPickUp(4);
+				}
+				else {
+					ResetGame();
+				}
+				roundsLeft -= 1;
 			}
 			if (timer >= moveTime){
 				if (reset == false) {
 					for each (var item:Block in players) 
 					{
 						item.moveSnake();
-						item.pressed = false;
 					}
 					checkColl();
 					timer = 0;
@@ -116,19 +130,27 @@ package snake.game
 			}
 		}
 		
-		/*private function resetPlayer(Player:Block, playersIndex:int):void {
-			removeChild(Player);
-			players.slice(playersIndex, 1);
+		private function resetPlayer(Player:Block, playersIndex:int, length:int):void {
+			Player.removeSnake();
 			player = new Block();
 			randomX = Math.floor(Math.random()/2 * amountOfLines)* gridSnap;
 			randomY = Math.floor(Math.random() * amountOfLines)* gridSnap;
 			player.Id = playersIndex;
-			player.DrawSnake(randomX, randomY, 4);
+			player.DrawSnake(randomX, randomY, length);
 			addChild(player);
 			players[playersIndex] = player;
-		}*/
+		}
 		
 		public function ResetGame():void {
+			if (players[0].squares.length == players[1].squares.length) {
+				trace("tie game!");
+			}
+			if (players[0].squares.length > players[1].squares.length) {
+				trace("player 0 won with " + players[0].squares.length + " blocks!");
+			}
+			else {
+				trace("player 1 won with " + players[1].squares.length + " blocks!");
+			}
 			for each (var player:Block in players) 
 			{
 				removeChild(player);
@@ -156,6 +178,7 @@ package snake.game
 		}
 		
 		private function addPickUp(Amount:int):void {
+			trace(roundsLeft + "Rounds left");
 			for (var i:int = 0; i < Amount; i++) 
 			{
 			pickUp = new PickUp;
@@ -173,54 +196,43 @@ package snake.game
 				pickUp.addPickUp(randomX, randomY, 0x000000);
 				pickUps.push(pickUp);
 			}
-			trace(randomX + " " + randomY);
 		}
 	}
 		
 		private function Control(e:KeyboardEvent):void {
-			if(players[0] != null/* && players[0].pressed == false*/){
-				if (e.keyCode == 87 && players[0].moveDir != 3) {//w
+			if(players[0] != null){
+				if (e.keyCode == 87 && players[0].lastMoveDir != 3) {//w
 					players[0].moveDir = 1;
-					//players[0].pressed = true;
 				}
-				if (e.keyCode == 68 && players[0].moveDir != 4) {//d
+				if (e.keyCode == 68 && players[0].lastMoveDir != 4) {//d
 					players[0].moveDir = 2;
-					//players[0].pressed = true;
 				}
-				if (e.keyCode == 83 && players[0].moveDir != 1) {//s
+				if (e.keyCode == 83 && players[0].lastMoveDir != 1) {//s
 					players[0].moveDir = 3;
-					//players[0].pressed = true;
 				}
-				if (e.keyCode == 65 && players[0].moveDir != 2) {//a
+				if (e.keyCode == 65 && players[0].lastMoveDir != 2) {//a
 					players[0].moveDir = 4;
-					//players[0].pressed = true;
 				}
 				if (e.keyCode == 81) {
-					dropBlock(0, 0xFF0000);
-					//players[0].pressed = true;
+					dropBlock(0, players[0].color);
 				}
 			}
 			
-			if(players[1] != null/* && players[1].pressed == false*/){
-				if (e.keyCode == 38 && players[1].moveDir != 3) {//up
+			if(players[1] != null){
+				if (e.keyCode == 38 && players[1].lastMoveDir != 3) {//up
 					players[1].moveDir = 1;
-					//players[1].pressed = true;
 				}
-				if (e.keyCode == 39 && players[1].moveDir != 4) {//right
+				if (e.keyCode == 39 && players[1].lastMoveDir != 4) {//right
 					players[1].moveDir = 2;
-					//players[1].pressed = true;
 				}
-				if (e.keyCode == 40 && players[1].moveDir != 1) {//down
+				if (e.keyCode == 40 && players[1].lastMoveDir != 1) {//down
 					players[1].moveDir = 3;
-					//players[1].pressed = true;
 				}
-				if (e.keyCode == 37 && players[1].moveDir != 2) {//left
+				if (e.keyCode == 37 && players[1].lastMoveDir != 2) {//left
 					players[1].moveDir = 4;
-					//players[1].pressed = true;
 				}
 				if (e.keyCode == 13) {
-					dropBlock(1, 0x00FF00);
-					//players[1].pressed = true;
+					dropBlock(1, players[1].color);
 				}
 			}
 		}
@@ -231,8 +243,8 @@ package snake.game
 				if (players[i].lastPos.x < 0 || players[i].lastPos.x >= gameWidth ||
 					players[i].lastPos.y < 0 || players[i].lastPos.y >= gameHeight)
 					{
-						removeEventListener(Event.ENTER_FRAME, Update);
-						ResetGame();
+						//removeEventListener(Event.ENTER_FRAME, Update);
+						resetPlayer(players[i],players[i].Id,players[i].squares.length - 2);
 						break;
 				}
 				for (var o:int = 0; o < players[i].squares.length; o++) 
@@ -241,14 +253,13 @@ package snake.game
 						{
 							if (players[i].square != players[i].squares[o])
 							{
-								ResetGame();
+								resetPlayer(players[i],players[i].Id,players[i].squares.length - 2);
 								break;
 							}
 						}
 				}
 				for (var k:int = 0; k < pickUps.length; k++) 
 				{
-					//if (players[i].square.hitTestObject(pickUps[k])) {
 					if (intersectsTest(players[i].square, pickUps[k])) {
 						if(pickUps[k].id == -1 || pickUps[k].id == players[i].Id){
 							removeChild(pickUps[k]);
@@ -257,7 +268,7 @@ package snake.game
 							trace("Player " + i + " has picked up a block and is now " + players[i].squares.length + " blocks long");
 						}
 						else {
-							ResetGame();
+							resetPlayer(players[i],players[i].Id,players[i].squares.length - 2);
 							break;
 						}
 					}
