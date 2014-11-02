@@ -45,29 +45,32 @@ package snake.game
 		private var wallY:Shape;
 		private var wallWidth:int = 20;
 		private var roundsLeft:int = 3;
+		private var originalRoundsLeft:int;
 		private var normalPickups:int = 0;
 		
 		public function Game() {
-			addEventListener(ScreenEvents.NEW_PLAYERLIST , menu);
-			trace("3!");
-			startGame();
-			addEventListener(EnterFrameEvent.ENTER_FRAME, countDown);
+			//addEventListener(ScreenEvents.NEW_PLAYERLIST , menu);
+			menu();
 			//stage.scaleMode = StageScaleMode.EXACT_FIT;
 		}
 		
-		private function menu(e:ScreenEvents):void {
+		private function menu():void {
 			//show players or connect or whatever
-			removeEventListener(ScreenEvents.NEW_PLAYERLIST, menu);
-			addEventListener(ScreenEvents.PLAY , startCountDown);
+			trace("menu");
+			//removeEventListener(ScreenEvents.NEW_PLAYERLIST, menu);
+			addEventListener(KeyboardEvent.KEY_DOWN , startCountDown);
 		}
 		
-		private function startCountDown(e:ScreenEvents):void {
-			trace("3!");
-			//addEventListener(EnterFrameEvent.ENTER_FRAME, countDown);
-			removeEventListener(ScreenEvents.PLAY, startCountDown);
+		private function startCountDown(e:KeyboardEvent):void {
+			if(e.keyCode == 13){
+				trace("3!");
+				startGame();
+				addEventListener(EnterFrameEvent.ENTER_FRAME, countDown);
+				removeEventListener(KeyboardEvent.KEY_DOWN, startCountDown);
+			}
 		}
 		
-		private function countDown():void {
+		private function countDown(e:EnterFrameEvent):void {
 			countDownIndex++
 			if (countDownIndex / 30 == 1) {
 				trace("2!");
@@ -84,6 +87,7 @@ package snake.game
 		private function startGame():void {
 			removeEventListener(EnterFrameEvent.ENTER_FRAME, countDown);
 			countDownIndex = 0;
+			originalRoundsLeft = roundsLeft;
 			removeEventListener(KeyboardEvent.KEY_DOWN, startGame);
 			gameWidth = amountOfLines * gridSnap;
 			gameHeight = amountOfLines * gridSnap;
@@ -115,6 +119,8 @@ package snake.game
 				}
 				else {
 					ResetGame();
+					endScreen();
+					roundsLeft = originalRoundsLeft;
 				}
 				roundsLeft -= 1;
 			}
@@ -164,6 +170,18 @@ package snake.game
 			players.splice(0,playerAmount);
 			pickUps.splice(0, pickUps.length);
 			removeEventListener(EnterFrameEvent.ENTER_FRAME, Update);
+		}
+		
+		private function endScreen():void {
+			trace("endscreen");
+			addEventListener(KeyboardEvent.KEY_DOWN, goToMenu);
+		}
+		
+		private function goToMenu(e:KeyboardEvent):void {
+			if (e.keyCode == 13) {
+				removeEventListener(KeyboardEvent.KEY_DOWN, goToMenu);
+				menu();
+			}
 		}
 		
 		private function dropBlock(playerIndex:int , playerColor:uint):void {
