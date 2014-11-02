@@ -54,8 +54,8 @@ package snake.utils.debug {
 			return null;
 		}
 
-		public function mouseWheel(event:MouseEvent){
-		trace("The delta value is: " + event.delta);
+		public function mouseWheel(event:MouseEvent):void{
+			trace("The delta value is: " + event.delta);
 		}
 		
 		public function Debug(parentDisplayObjectContainer:DisplayObjectContainer) {

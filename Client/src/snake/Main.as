@@ -88,7 +88,7 @@ package snake {
 		private function OnButtonPing( event:starling.events.Event ):void
 		{
 			trace("button Ping Pressed");
-			con.SendPing();
+			con.dataSenderTCP.SendPing();
 		}
 		
 		private function OnButtonPlay( event:starling.events.Event ):void

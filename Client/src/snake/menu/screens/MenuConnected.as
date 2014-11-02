@@ -79,7 +79,7 @@ package snake.menu.screens
 				removeChild(playerList);
 			}
 			playerList = new List();
-			var items:Array = [];
+			items = [];
 			if (playerList != null) {
 				for(var i:int = 0; i < PlayerList.playerCount; i++)
 				{
@@ -146,7 +146,7 @@ package snake.menu.screens
 			dispatchEventWith( ScreenEvents.DISCONNECT ) 
 		};
 		private function OnButtonReady(e:Event):void {
-			con.SendPlayerReady(!PlayerList.thisPlayer.isReady);
+			con.dataSenderTCP.SendPlayerReady(!PlayerList.thisPlayer.isReady);
 		}
 	}
 

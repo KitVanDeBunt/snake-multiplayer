@@ -2,18 +2,21 @@ package snake.net
 {
 	import snake.Main;
 	import snake.utils.debug.Debug;
+	import starling.events.EventDispatcher;
 	/**
 	 * ...
 	 * @author Kit van de Bunt
 	 */
-	public class PlayerList 
+	public class PlayerList
 	{
+		private static var eventDispatcher:EventDispatcher;
 		private static var players:Vector.<Player>;
 		private static var playerID_:int = -1;
 		private static var adminId_:int = -1;
 		
 		public static function Init():void {
 			players = new Vector.<Player>();
+			eventDispatcher = new EventDispatcher();
 		}
 		public static function get playerCount():int {
 			return players.length;
