@@ -12,7 +12,7 @@ package snake.game
 	 
 	public class Block extends Sprite
 	{
-		public var Id:int;
+		public var Id:int = -1;
 		
 		public var square:Shape;
 		public var squares:Array = new Array();
@@ -70,7 +70,10 @@ package snake.game
 			}
 			square = new Shape();
 			square.graphics.beginFill(checkColor(Id));
-			square.graphics.drawRect(lastPos.x,lastPos.y,10,10);
+			//square.graphics.drawRect(lastPos.x,lastPos.y,10,10);
+			square.x = lastPos.x;
+			square.y = lastPos.y;
+			square.graphics.drawRect(0, 0, 10, 10);
 			square.graphics.endFill();
 			addChild(square);
 			squares.push(square);
@@ -95,10 +98,18 @@ package snake.game
 			}
 			square = new Shape();
 			square.graphics.beginFill(checkColor(Id));
-			square.graphics.drawRect(lastPos.x, lastPos.y, 10, 10);
+			//square.graphics.drawRect(lastPos.x, lastPos.y, 10, 10);
+			square.x = lastPos.x;
+			square.y = lastPos.y;
+			square.graphics.drawRect(0, 0, 10, 10);
 			square.graphics.endFill();
 			addChild(square);
 			squares.push(square);
+		}
+		
+		public function removeLastBlock():void {
+			removeChild(squares[0]);
+			squares.splice(0, 1);
 		}
 	}
 }

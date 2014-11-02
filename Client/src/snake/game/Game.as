@@ -23,7 +23,7 @@ package snake.game
 	 
 	public class Game extends Sprite 
 	{
-		private var playerAmount:int = 2;
+		private var playerAmount:int = 1;
 		private var moveTime:int = 3;
 		private var amountOfLines:int = 40;
 		private var gridSnap:int = 11;
@@ -40,11 +40,13 @@ package snake.game
 		private var reset:Boolean = false;
 		private var switchone:Boolean = true;
 		private var countDownIndex:int = 0;
-		private var wall:Shape;
+		private var wallX:Shape;
+		private var wallY:Shape;
 		private var wallWidth:int = 20;
 		
 		public function Game() {
 			addEventListener(ScreenEvents.NEW_PLAYERLIST , menu);
+			trace("3!");
 			addEventListener(EnterFrameEvent.ENTER_FRAME, countDown);
 			//stage.scaleMode = StageScaleMode.EXACT_FIT;
 		}
@@ -135,8 +137,22 @@ package snake.game
 			{
 				removeChild(pickup);
 			}
+			removeChild(wallX);
+			removeChild(wallY);
 			players.splice(0,playerAmount);
 			pickUps.splice(0, pickUps.length);
+			removeEventListener(EnterFrameEvent.ENTER_FRAME, Update);
+		}
+		
+		private function dropBlock(playerIndex:int , playerColor:uint):void {
+			if(players[playerIndex].squares.length > 1){
+				pickUp = new PickUp;
+				pickUp.id = playerIndex;
+				addChild(pickUp);
+				pickUp.addPickUp(players[playerIndex].squares[0].x, players[playerIndex].squares[0].y, playerColor);
+				players[playerIndex].removeLastBlock();
+				pickUps.push(pickUp);
+			}
 		}
 		
 		private function addPickUp(Amount:int):void {
@@ -154,7 +170,7 @@ package snake.game
 					Amount -= 1;
 			}
 			else {
-				pickUp.addPickUp(randomX, randomY);
+				pickUp.addPickUp(randomX, randomY, 0x000000);
 				pickUps.push(pickUp);
 			}
 			trace(randomX + " " + randomY);
@@ -179,6 +195,10 @@ package snake.game
 					players[0].moveDir = 4;
 					//players[0].pressed = true;
 				}
+				if (e.keyCode == 81) {
+					dropBlock(0, 0xFF0000);
+					//players[0].pressed = true;
+				}
 			}
 			
 			if(players[1] != null/* && players[1].pressed == false*/){
@@ -198,57 +218,65 @@ package snake.game
 					players[1].moveDir = 4;
 					//players[1].pressed = true;
 				}
+				if (e.keyCode == 13) {
+					dropBlock(1, 0x00FF00);
+					//players[1].pressed = true;
+				}
 			}
 		}
 		
 		private function checkColl():void {
 			for (var i:int = 0; i < players.length; i++) 
 			{
-				for (var k:int = 0; k < pickUps.length; k++) 
-				{
-					//if (players[i].square.hitTestObject(pickUps[k])) {
-					if (intersectsTest(players[i].square,pickUps[k])){
-						removeChild(pickUps[k]);
-						pickUps.splice(k, 1);
-						players[i].addBlock();
-						trace("Player " + i + " has picked up a block and is now " + players[i].squares.length + " blocks long");
-					}
-				}
-		//		for each (var item:Block in players) 
-			//	{
-/*			for (var j:int = 0; j < players[i].squares.length; j++) 
-					{
-						if (intersectsTest(players[i].square,players[i].squares[j]))
-						{
-							if (players[i].square != players[i].squares[j])
-							{
-								ResetGame();
-								trace("Player " + i + " hitted player " + players[i].Id);
-							}
-						}
-					}*/
-			//	}
 				if (players[i].lastPos.x < 0 || players[i].lastPos.x >= gameWidth ||
 					players[i].lastPos.y < 0 || players[i].lastPos.y >= gameHeight)
 					{
-					removeEventListener(Event.ENTER_FRAME, Update);
+						removeEventListener(Event.ENTER_FRAME, Update);
 						ResetGame();
+						break;
+				}
+				for (var o:int = 0; o < players[i].squares.length; o++) 
+					{
+						if (intersectsTest(players[i].square,players[i].squares[o]))
+						{
+							if (players[i].square != players[i].squares[o])
+							{
+								ResetGame();
+								break;
+							}
+						}
+				}
+				for (var k:int = 0; k < pickUps.length; k++) 
+				{
+					//if (players[i].square.hitTestObject(pickUps[k])) {
+					if (intersectsTest(players[i].square, pickUps[k])) {
+						if(pickUps[k].id == -1 || pickUps[k].id == players[i].Id){
+							removeChild(pickUps[k]);
+							pickUps.splice(k, 1);
+							players[i].addBlock();
+							trace("Player " + i + " has picked up a block and is now " + players[i].squares.length + " blocks long");
+						}
+						else {
+							ResetGame();
+							break;
+						}
+					}
 				}
 			}
 		}
 		
 		private function drawWall():void {
-			wall = new Shape;
-			wall.graphics.beginFill(0x000000);
-			wall.graphics.drawRect(gameWidth, 0, wallWidth, gameHeight);
-			wall.graphics.endFill();
-			addChild(wall);
+			wallX = new Shape;
+			wallX.graphics.beginFill(0x000000);
+			wallX.graphics.drawRect(gameWidth, 0, wallWidth, gameHeight);
+			wallX.graphics.endFill();
+			addChild(wallX);
 			
-			wall = new Shape;
-			wall.graphics.beginFill(0x000000);
-			wall.graphics.drawRect(0, gameHeight, gameWidth + wallWidth, wallWidth);
-			wall.graphics.endFill();
-			addChild(wall);
+			wallY = new Shape;
+			wallY.graphics.beginFill(0x000000);
+			wallY.graphics.drawRect(0, gameHeight, gameWidth + wallWidth, wallWidth);
+			wallY.graphics.endFill();
+			addChild(wallY);
 		}
 		
 		private function intersectsTest(obj1:DisplayObjectContainer,obj2:DisplayObjectContainer):Boolean {
