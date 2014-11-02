@@ -76,6 +76,16 @@ package snake.net
 				return false;
 			}
 		}
+		public static function playersReady():Boolean {
+			var ready:Boolean = true;
+			for (var i:int = 0; i < players.length; i++) {
+				if(!players[i].isReady){
+					ready = false;
+					break;
+				}
+			}
+			return ready;
+		}
 	}
 
 }

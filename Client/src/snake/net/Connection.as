@@ -13,6 +13,8 @@ package snake.net
 	import flash.events.ProgressEvent;
 	import flash.utils.ByteArray;
 	import flash.utils.Endian;
+	import starling.events.StarlingEvent;
+	
 	/**
 	 * ...
 	 * @author Kit van de Bunt
@@ -27,8 +29,6 @@ package snake.net
 		
 		//public var playerSelf:Player = new Player("", -1, -1);
 		//public var playerId:int;
-		
-		public var GameStart:Boolean;
 		
 		private var dataProcessorTCP:DataProcessorTCP;
 		public var dataSenderTCP:DataSenderTCP;
@@ -191,7 +191,7 @@ package snake.net
 						
 					case MessageType.GAME_START:
 						Main.debug.print(("[Message]MessageType.GAME_START") , Debug.Server_2);
-						GameStart = true;
+						Main.eventManager.dispatchEvent((new StarlingEvent(ScreenEvents.SERVER_GAME_START)));
 						break;
 						
 					case MessageType.SERVER_ERROR:

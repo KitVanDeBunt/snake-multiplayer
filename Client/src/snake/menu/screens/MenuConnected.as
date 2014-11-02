@@ -1,11 +1,13 @@
 package snake.menu.screens 
 {
+	import feathers.controls.Alert;
 	import feathers.controls.ButtonGroup;
 	import feathers.controls.List;
 	import feathers.controls.renderers.DefaultListItemRenderer;
 	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.controls.Screen;
 	import feathers.data.ListCollection;
+	import starling.display.Image;
 	import starling.display.Quad;
 	import starling.display.Shape;
 	import snake.net.Connection
@@ -16,6 +18,7 @@ package snake.menu.screens
 	import snake.menu.ScreenEvents;
 	import snake.Main;
 	import snake.utils.debug.Debug;
+	import feathers.core.PopUpManager;
 	/**
 	 * ...
 	 * @author Kit van de Bunt
@@ -42,6 +45,26 @@ package snake.menu.screens
 			BuildButtons();
 			
 			Main.eventManager.addEventListener(ScreenEvents.NEW_PLAYERLIST, newPlayerList);
+			Main.eventManager.addEventListener(ScreenEvents.SERVER_ERROR_RECIEVED, serverErrorRecieved);
+			Main.eventManager.addEventListener(ScreenEvents.SERVER_GAME_START, serverStartGame);
+		}
+		
+		private function serverErrorRecieved():void {
+			/*var popShape:Shape = new Shape();
+			popShape.graphics.drawRect( -100, -50, 200, 100);
+			PopUpManager.addPopUp( popShape, true, true );*/
+			SpawnAlert("server Error Recieved");
+		}
+		
+		private function SpawnAlert(message:String):void {
+			var alert:Alert = Alert.show(message, "Warning", new ListCollection(
+			[
+				{ label: "OK", triggered: removeAlert }
+			]) );
+		}
+		
+		private function removeAlert(e:Event):void {
+			
 		}
 		
 		private function BuildButtons():void {
@@ -68,6 +91,7 @@ package snake.menu.screens
 			}
 			buttonGroup.dataProvider = menuConected;
 		}
+		
 		private function BuildPlayerList():void {
 			Main.debug.print("[build player list]",Debug.Menu_1);
 			BuildButtons();
@@ -134,20 +158,36 @@ package snake.menu.screens
 			
 		}
 		
-		private function OnButtonPing(e:Event):void { 		dispatchEventWith( ScreenEvents.PING ) };
+		private function OnButtonPing(e:Event):void { 		
+			dispatchEventWith( ScreenEvents.PING ) 
+		};
 		
 		private function newPlayerList(e:Event):void { 	
 			Main.debug.print("[newPlayerList]",Debug.Menu_1);
 			BuildPlayerList();
-		};
-		private function OnButtonPlay(e:Event):void { 		dispatchEventWith( ScreenEvents.PLAY ) };
+		}
+		
+		private function OnButtonPlay(e:Event):void { 		
+			if(PlayerList.playersReady()){
+				dispatchEventWith( ScreenEvents.PLAY_BUTTON );
+				con.dataSenderTCP.SendAdminStart();
+			}else {
+				SpawnAlert("[Client]players not ready");
+			}
+		}
+		
+		private function serverStartGame(e:Event):void {
+			dispatchEventWith( ScreenEvents.PLAY );
+		}
+		
 		private function OnButtonDisconnect(e:Event):void {	
 			Main.eventManager.removeEventListener(ScreenEvents.NEW_PLAYERLIST, newPlayerList);
-			dispatchEventWith( ScreenEvents.DISCONNECT ) 
-		};
+			Main.eventManager.removeEventListener(ScreenEvents.SERVER_ERROR_RECIEVED, serverErrorRecieved);
+			dispatchEventWith( ScreenEvents.DISCONNECT );
+		}
+		
 		private function OnButtonReady(e:Event):void {
 			con.dataSenderTCP.SendPlayerReady(!PlayerList.thisPlayer.isReady);
 		}
 	}
-
 }

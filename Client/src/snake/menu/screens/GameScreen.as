@@ -7,6 +7,8 @@ package snake.menu.screens
 	import snake.game.Game;
 	import starling.display.Sprite;
 	import snake.menu.ScreenEvents;
+	import snake.Main;
+	import snake.utils.debug.Debug;
 	/**
 	 * ...
 	 * @author Kit van de Bunt
@@ -31,7 +33,7 @@ package snake.menu.screens
 			gameLayer = new Game();
 			addChild(gameLayer);
 			
-			trace("StartGame");
+			Main.debug.print("[gameCreated]",Debug.Menu_1);
 		}
 		
 		private function onExitButton(e:Event):void { 

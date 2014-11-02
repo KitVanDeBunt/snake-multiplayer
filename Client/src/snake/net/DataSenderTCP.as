@@ -96,7 +96,7 @@ package snake.net
 			socket_.flush();
 		}
 		
-		public function SendAdminStart(value:Boolean = false):void {
+		public function SendAdminStart():void {
 			var messageLength:int = 5;
 			
 			var bytes:ByteArray = new ByteArray();

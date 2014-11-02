@@ -188,7 +188,7 @@ void Server::SendGameStart(void){
 	unsigned char message[5];
 	ByteConverter::PushIntToUnsignedCharArray(message,0,5);
 	message[4]=(unsigned char)(MessageType::GAME_START);
-	peer->Send((const char *)message, 6,"127.0.0.1",true);
+	peer->Send((const char *)message, 5,"127.0.0.1",true);
 	printf("\n");
 }
 
