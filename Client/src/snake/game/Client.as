@@ -21,7 +21,7 @@ package snake.game
 		public function getDir():int {
 			for (var i:int = 0; i < PlayerList.players.length; i++) 
 			{
-				if (i == id) {
+				if (PlayerList.players[i].id == PlayerList.playerID){
 					trace(PlayerList.players[i].dir);
 					dir = PlayerList.players[i].dir;
 				}

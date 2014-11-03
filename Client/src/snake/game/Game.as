@@ -103,7 +103,7 @@ package snake.game
 			for (var i:int = 0; i < playerAmount; i++) 
 			{
 					player = new Block();
-				if (i == PlayerList.playerID){
+				if (PlayerList.players[i].id == PlayerList.playerID){
 						randomX = Math.floor(Math.random()/2 * amountOfLines)*(gameWidth/amountOfLines);
 						randomY = Math.floor(Math.random() * amountOfLines) * (gameHeight / amountOfLines);
 					}

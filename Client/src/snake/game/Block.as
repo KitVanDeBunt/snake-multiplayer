@@ -44,7 +44,7 @@ package snake.game
 				lastPos = new Vector3D(PosX + (11*i), PosY, length, 0);
 			}
 			con = Connection.GetInstance();
-			con.dataSenderTCP.SendPlayerPosition(lastPos.x, lastPos.y);
+			con.dataSenderTCP.SendPlayerPosition(PosX, PosY);
 		}
 		
 		public function removeSnake():void {
