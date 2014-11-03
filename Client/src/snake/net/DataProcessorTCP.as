@@ -96,6 +96,7 @@ package snake.net
 						}
 					}
 				}
+				Main.eventManager.dispatchEvent(new Event(ScreenEvents.SERVER_PLAYER_POSITION_LIST));
 			}
 			
 			public function ProcessPlayerListUpdate(_bytes:ByteArray):void {
