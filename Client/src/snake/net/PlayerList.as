@@ -10,7 +10,7 @@ package snake.net
 	public class PlayerList
 	{
 		private static var eventDispatcher:EventDispatcher;
-		private static var players:Vector.<Player>;
+		public static var players:Vector.<Player>;
 		private static var playerID_:int = -1;
 		private static var adminId_:int = -1;
 		
