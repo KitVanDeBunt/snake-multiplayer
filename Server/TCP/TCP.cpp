@@ -73,21 +73,21 @@ int _tmain(int argc, _TCHAR* argv[])
 	
 
 	ConSettings conSettings;
-	printf("(C)lient or (S)erver?\n");
+	//printf("(C)lient or (S)erver?\n");
 	
-	gets(str);
-	if ((str[0]=='c')||(str[0]=='C')){
+	//gets(str);
+	/*if ((str[0]=='c')||(str[0]=='C')){
 		con = new Client();
 		conSettings.port = SERVER_PORT;
 		conSettings.maxPlayers = 0;
-	} else {
+	} else {*/
 		con = new Server();
 		conSettings.port = SERVER_PORT;
 		conSettings.maxPlayers = Settings::maxPlayers;
 		//policyServer = new PolicyServer();
 		//policyServer->Init(POLICY_SERVER_PORT);
 		
-	}
+	//}
 	con->Init(conSettings);
 	
 	Loop();

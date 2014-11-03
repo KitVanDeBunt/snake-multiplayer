@@ -20,8 +20,8 @@ public:
 	void			id(unsigned char newId){id_ = newId;}
 	unsigned char	direction() const{return direction_;}
 	void			direction(unsigned char newDirection){direction_ = newDirection;}
-	unsigned char	xPos() const{return direction_;}
-	void			xPos(unsigned char newXPos){direction_ = newXPos;}
+	unsigned char	xPos() const{return xPos_;}
+	void			xPos(unsigned char newXPos){xPos_ = newXPos;}
 	unsigned char	yPos() const{return yPos_;}
 	void			yPos(unsigned char newYPos){yPos_ = newYPos;}
 	string			getName() const{return name_;}

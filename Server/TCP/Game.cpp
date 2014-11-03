@@ -84,6 +84,8 @@ void Game::SendPlayerDirectionList(){
 	for(int i = 0;i < playerCount;i++){
 		message[currentMessageL] = playerManager_->GetPlayers()[i].id();
 		message[currentMessageL+1] = playerManager_->GetPlayers()[i].direction();
+		cout<<"[Game] Dir: "<<(int)message[currentMessageL+1]<<" n:"<<playerManager_->GetPlayers()[i].getName()<<endl;
+		printf("[Game] Dir: %u \n",message[currentMessageL+1]);
 		currentMessageL+=2;
 	}
 	

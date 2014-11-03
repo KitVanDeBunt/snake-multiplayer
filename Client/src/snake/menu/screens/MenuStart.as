@@ -34,7 +34,8 @@ package snake.menu.screens
 			startGroup.dataProvider = menuStart;
 			
 			namefield = new TextInput();
-			namefield.text = "Snake";
+			var randNumName:int = Math.random() * 5000;
+			namefield.text = ("Snake"+randNumName);
 			addChild(namefield);
 			namefield.x = 300;
 			
