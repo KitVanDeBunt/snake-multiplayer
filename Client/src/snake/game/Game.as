@@ -39,8 +39,8 @@ package snake.game
 		private var players:Array = new Array();
 		private var pickUps:Array = new Array();
 		private var timer:int;
-		private var randomX:Number;
-		private var randomY:Number;
+		private var randomX:int;
+		private var randomY:int;
 		private var reset:Boolean = false;
 		private var switchone:Boolean = true;
 		private var countDownIndex:int = 0;
@@ -101,15 +101,15 @@ package snake.game
 			for (var i:int = 0; i < playerAmount; i++) 
 			{
 				player = new Block();
-				if (i != client.id) {
+				if (i == client.id) {
 					randomX = Math.floor(Math.random()/2 * amountOfLines)* gridSnap;
 					randomY = Math.floor(Math.random() * amountOfLines) * gridSnap;
-					client.setPositions();
-					con.dataSenderTCP.SendPlayerPosition(players[client.id].moveDir);
+					//client.setPositions();
+					con.dataSenderTCP.SendPlayerPosition(randomX, randomY);
 				}
 				else {
-					randomX = client.getPositionX();
-					randomY = client.getPositionY();
+					randomX = client.getPositionX(i);
+					randomY = client.getPositionY(i);
 				}
 				player.Id = i;
 				player.DrawSnake(randomX, randomY, startLength);
@@ -257,7 +257,7 @@ package snake.game
 				if (e.keyCode == 81) {
 					dropBlock(client.id, players[client.id].color);
 				}
-				con.dataSenderTCP.SendPlayerPosition(players[client.id].moveDir);
+				con.dataSenderTCP.SendPlayerDirection(players[client.id].moveDir);
 				/* - send movedirection
 				 */
 			}

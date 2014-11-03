@@ -10,8 +10,11 @@ package snake.game
 	{
 		public var id:int;
 		private var dir:int;
+		private var x:int;
+		private var y:int;
 		
 		public function getid():void {
+			id = 0;
 			//id = get id from server per player
 		}
 		
@@ -26,16 +29,18 @@ package snake.game
 			return dir;
 		}
 		
-		public function getPositionX(): int {
-			
+		public function getPositionX(index:int):int {
+			if(PlayerList.players[index] != null){
+				x = PlayerList.players[index].xPos;
+			}
+			return x;
 		}
 		
-		public function getPositionY():int {
-			
-		}
-		
-		public function setPositions():void {
-			
+		public function getPositionY(index:int):int {
+			if(PlayerList.players[index] != null){
+				y = PlayerList.players[index].yPos;
+			}
+			return y;
 		}
 		
 	}
