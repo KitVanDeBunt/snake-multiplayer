@@ -116,8 +116,8 @@ void Server::ExecuteMessage(MessageType messageType,int messageLength,SystemAddr
 		SendPlayerListUpdate();
 		break;
 	case MessageType::ADMIN_START:
-		game = new Game(peer,&playersManager);
 		SendGameStart();
+		game = new Game(peer,&playersManager);
 		break;
 	default:
 		printf("[Error]recieved message type not found!!!\n");

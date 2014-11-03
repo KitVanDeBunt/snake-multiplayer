@@ -134,8 +134,8 @@ package snake.net
 		
 		private function onData(e:ProgressEvent):void {
 			
-			Main.debug.print(("") , Debug.Server_2);
-			Main.debug.print(("[On Data]Process Packege") , Debug.Server_2);
+			Main.debug.print(("") , Debug.Server_3);
+			Main.debug.print(("[On Data]Process Packege") , Debug.Server_3);
 			
 			var bytes:ByteArray = new ByteArray;
 			bytes.endian = Endian.LITTLE_ENDIAN;
@@ -149,8 +149,8 @@ package snake.net
 				var messageType:int = bytes.readByte();
 				
 				
-				Main.debug.print(("") , Debug.Server_2);
-				Main.debug.print(("[Message]Num:" + messageNum + " Type: " + messageType+" L: " + messageLength) , Debug.Server_2);
+				Main.debug.print(("") , Debug.Server_3);
+				Main.debug.print(("[Message]Num:" + messageNum + " Type: " + messageType+" L: " + messageLength) , Debug.Server_3);
 				
 				
 				switch(messageType) {
@@ -170,7 +170,7 @@ package snake.net
 						break;
 						
 					case MessageType.PLAYER_DIRECTION_LIST:
-						Main.debug.print(("[Message]MessageType.PLAYER_DIRECTION_LIST") , Debug.Server_2);
+						Main.debug.print(("[Message]MessageType.PLAYER_DIRECTION_LIST") , Debug.Server_3);
 						dataProcessorTCP.ProcessDirections(bytes)
 						break;
 						
