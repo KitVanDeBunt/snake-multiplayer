@@ -29,16 +29,16 @@ package snake.game
 			return dir;
 		}
 		
-		public function getPositionX(index:int):int {
-			if(PlayerList.players[index] != null){
-				x = PlayerList.players[index].xPos;
+		public function getPositionX():int {
+			if(PlayerList.players[id] != null){
+				x = PlayerList.players[id].xPos;
 			}
 			return x;
 		}
 		
-		public function getPositionY(index:int):int {
-			if(PlayerList.players[index] != null){
-				y = PlayerList.players[index].yPos;
+		public function getPositionY():int {
+			if(PlayerList.players[id] != null){
+				y = PlayerList.players[id].yPos;
 			}
 			return y;
 		}

@@ -98,19 +98,15 @@ package snake.game
 			removeEventListener(KeyboardEvent.KEY_DOWN, startGame);
 			gameWidth = amountOfLines * gridSnap;
 			gameHeight = amountOfLines * gridSnap;
+			trace("startgame");
 			for (var i:int = 0; i < playerAmount; i++) 
 			{
 				player = new Block();
-				if (i == client.id) {
-					randomX = Math.floor(Math.random()/2 * amountOfLines)* gridSnap;
-					randomY = Math.floor(Math.random() * amountOfLines) * gridSnap;
-					//client.setPositions();
-					con.dataSenderTCP.SendPlayerPosition(randomX, randomY);
-				}
-				else {
-					randomX = client.getPositionX(i);
-					randomY = client.getPositionY(i);
-				}
+				//randomX = client.getPositionX();
+				//randomY = client.getPositionY();
+				randomX = 110;
+				randomY = 110;
+				trace(randomX + randomY);
 				player.Id = i;
 				player.DrawSnake(randomX, randomY, startLength);
 				addChild(player);
@@ -120,8 +116,7 @@ package snake.game
 		}
 		
 		private function Update(e:Event):void {
-			/* - send movedirection
-			 * - get other movedirections
+			 /* - get other movedirections
 			 */
 			timer += 1;
 			normalPickups = 0;
@@ -158,10 +153,11 @@ package snake.game
 		private function resetPlayer(Player:Block, playersIndex:int, length:int):void {
 			/* - get new x,y somehow
 			 */
+			trace("reset");
 			Player.removeSnake();
 			player = new Block();
-			//randomX = Math.floor(Math.random()/2 * amountOfLines)* gridSnap;
-			//randomY = Math.floor(Math.random() * amountOfLines)* gridSnap;
+			randomX = Math.floor(Math.random()/2 * amountOfLines)* gridSnap;
+			randomY = Math.floor(Math.random() * amountOfLines)* gridSnap;
 			player.Id = playersIndex;
 			player.DrawSnake(randomX, randomY, length);
 			addChild(player);
@@ -288,6 +284,7 @@ package snake.game
 					players[i].lastPos.y < 0 || players[i].lastPos.y >= gameHeight)
 					{
 						//removeEventListener(Event.ENTER_FRAME, Update);
+						trace("hit");
 						resetPlayer(players[i],players[i].Id,players[i].squares.length - 2);
 						break;
 				}
