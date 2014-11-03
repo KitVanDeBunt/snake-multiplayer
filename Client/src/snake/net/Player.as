@@ -10,6 +10,8 @@ package snake.net
 	{
 		public var name:String;
 		public var dir:int;
+		public var xPos:int;
+		public var yPos:int;
 		public var id:int;
 		private var isAdmin_:Boolean;
 		public var isReady:Boolean;

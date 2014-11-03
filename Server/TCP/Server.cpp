@@ -63,6 +63,9 @@ void Server::Loop(){
 			break;
 		}
 	}
+	if(game != NULL){
+		game->Loop();
+	}
 	Connector::Loop();
 }
 
@@ -96,7 +99,8 @@ void Server::ExecuteMessage(MessageType messageType,int messageLength,SystemAddr
 		SendPlayerListUpdate();
 		break;
 	case MessageType::PLAYER_SET_NEW_DIRECTION:
-
+		data = pack->data;
+		playersManager.SetPlayerDirection(data[5],caller);
 		break;
 	case MessageType::PLAYER_READY:
 		data = pack->data;
@@ -112,7 +116,7 @@ void Server::ExecuteMessage(MessageType messageType,int messageLength,SystemAddr
 		SendPlayerListUpdate();
 		break;
 	case MessageType::ADMIN_START:
-		game = new Game();
+		game = new Game(peer,&playersManager);
 		SendGameStart();
 		break;
 	default:

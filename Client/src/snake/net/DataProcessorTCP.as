@@ -71,6 +71,33 @@ package snake.net
 				}
 			}
 			
+			public function ProcessPlayerPositions(_bytes:ByteArray):void {
+				var listLength:int = _bytes.readInt();
+				var data:Vector.<Player> = new Vector.<Player>();
+				
+				var listId:Vector.<int> = new Vector.<int>();
+				var listXPos:Vector.<int> = new Vector.<int>();
+				var listYPos:Vector.<int> = new Vector.<int>();
+				for (var i:int = 0; i < listLength; i++) 
+				{
+					listId.push(_bytes.readByte());
+					listXPos.push(_bytes.readByte());
+					listYPos.push(_bytes.readByte());
+				}
+				
+				for (var j:int = 0; j < PlayerList.playerCount; j++) 
+				{
+					for (var k:int = 0; k < listId.length; k++) 
+					{
+						if (PlayerList.player(j).id == listId[k]) {
+							PlayerList.player(j).xPos = listXPos[k];
+							PlayerList.player(j).yPos = listYPos[k];
+							return;
+						}
+					}
+				}
+			}
+			
 			public function ProcessPlayerListUpdate(_bytes:ByteArray):void {
 				var listLength:int = _bytes.readInt();
 				var listId:Vector.<int> = new Vector.<int>();
@@ -117,8 +144,8 @@ package snake.net
 				Main.debug.print("[ProcessServerError]:" +msg,Debug.Server_2);
 			}
 			//sending to the server
-			public function ProcessNewPlayerDir(_bytes:ByteArray):void {
+			/*public function ProcessNewPlayerDir(_bytes:ByteArray):void {
 				var dir:int = _bytes.readByte();
-			}
+			}*/
 	}
 }

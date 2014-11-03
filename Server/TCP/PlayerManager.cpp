@@ -45,15 +45,25 @@ void PlayerManager::SetPlayerName(string name,SystemAddress addres){
 	GetPlayer(addres)->setName(name);
 }
 
-void PlayerManager::SetPlayerReady(bool ready,SystemAddress addres){
-	GetPlayer(addres)->ready(ready);
+
+unsigned char PlayerManager::GetPlayerDirection(SystemAddress addres){
+	return GetPlayer(addres)->direction();
+}
+
+void PlayerManager::SetPlayerDirection(unsigned char direction,SystemAddress addres){
+	GetPlayer(addres)->direction(direction);
 }
 
 unsigned char PlayerManager::GetPlayerId(SystemAddress addres){
 	return GetPlayer(addres)->id();
 }
+
 void PlayerManager::SetPlayerId(unsigned char id,SystemAddress addres){
 	GetPlayer(addres)->id(id);
+}
+
+void PlayerManager::SetPlayerReady(bool ready,SystemAddress addres){
+	GetPlayer(addres)->ready(ready);
 }
 
 bool PlayerManager::GetPlayerReady(SystemAddress addres){

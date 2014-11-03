@@ -15,6 +15,8 @@ public:
 	void AddPlayer(SystemAddress addres);
 	void RemovePlayer(SystemAddress addres);
 	void SetPlayerName(string name,SystemAddress addres);
+	void SetPlayerDirection(unsigned char direction,SystemAddress addres);
+	unsigned char GetPlayerDirection(SystemAddress addres);
 	void SetPlayerReady(bool ready,SystemAddress addres);
 	bool GetPlayerReady(SystemAddress addres);
 	bool GetPlayersReady();

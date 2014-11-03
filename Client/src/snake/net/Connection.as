@@ -171,7 +171,12 @@ package snake.net
 						
 					case MessageType.PLAYER_DIRECTION_LIST:
 						Main.debug.print(("[Message]MessageType.PLAYER_DIRECTION_LIST") , Debug.Server_2);
-						dataProcessorTCP.ProcessNewPlayerDir(bytes)
+						dataProcessorTCP.ProcessDirections(bytes)
+						break;
+						
+					case MessageType.PLAYER_POSITION_LIST:
+						Main.debug.print(("[Message]MessageType.PLAYER_POSITION_LIST") , Debug.Server_2);
+						dataProcessorTCP.ProcessPlayerPositions(bytes)
 						break;
 						
 					case MessageType.PLAYER_IS_ADMIN:
