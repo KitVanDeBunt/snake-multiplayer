@@ -37,6 +37,7 @@ Player * PlayerManager::GetPlayer(unsigned char id){
 	}
 	return NULL;
 }
+
 string PlayerManager::GetPlayerName(SystemAddress addres){
 	return GetPlayer(addres)->getName();
 }

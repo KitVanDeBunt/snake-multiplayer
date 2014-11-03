@@ -1,5 +1,6 @@
 package snake.game 
 {
+	import snake.net.Connection;
 	import starling.core.Starling;
 	import starling.display.Sprite;
 	import starling.events.EnterFrameEvent;
@@ -47,11 +48,13 @@ package snake.game
 		private var roundsLeft:int = 3;
 		private var originalRoundsLeft:int;
 		private var normalPickups:int = 0;
+		private var con:Connection;
 		
 		public function Game() {
 			//addEventListener(ScreenEvents.NEW_PLAYERLIST , menu);
 			menu();
 			//stage.scaleMode = StageScaleMode.EXACT_FIT;
+			con = Connection.GetInstance();
 		}
 		
 		private function menu():void {
@@ -130,6 +133,7 @@ package snake.game
 					{
 						item.moveSnake();
 					}
+					con.dataSenderTCP.SendPlayerPosition(3);
 					checkColl();
 					timer = 0;
 				}
