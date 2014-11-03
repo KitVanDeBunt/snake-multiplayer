@@ -60,7 +60,8 @@ package snake.game
 		}
 		
 		private function menu():void {
-			//show players or connect or whatever
+			/*-get player playeramount, startlength,movetime,amountoflines, gridsnap.
+			 */
 			trace("menu");
 			//removeEventListener(ScreenEvents.NEW_PLAYERLIST, menu);
 			startCountDown();
@@ -93,6 +94,7 @@ package snake.game
 			removeEventListener(EnterFrameEvent.ENTER_FRAME, countDown);
 			countDownIndex = 0;
 			originalRoundsLeft = roundsLeft;
+			client.setId(0);
 			removeEventListener(KeyboardEvent.KEY_DOWN, startGame);
 			gameWidth = amountOfLines * gridSnap;
 			gameHeight = amountOfLines * gridSnap;
@@ -110,6 +112,9 @@ package snake.game
 		}
 		
 		private function Update(e:Event):void {
+			/* - send movedirection
+			 * - get other movedirections
+			 */
 			timer += 1;
 			normalPickups = 0;
 			for each (var thing:PickUp in pickUps) 
@@ -131,7 +136,7 @@ package snake.game
 			}
 			if (timer >= moveTime){
 				if (reset == false) {
-					client.getPositions();
+					client.getPosition();
 					for each (var item:Block in players) 
 					{
 						item.moveSnake();
@@ -144,10 +149,12 @@ package snake.game
 		}
 		
 		private function resetPlayer(Player:Block, playersIndex:int, length:int):void {
+			/* - get new x,y somehow
+			 */
 			Player.removeSnake();
 			player = new Block();
-			randomX = Math.floor(Math.random()/2 * amountOfLines)* gridSnap;
-			randomY = Math.floor(Math.random() * amountOfLines)* gridSnap;
+			//randomX = Math.floor(Math.random()/2 * amountOfLines)* gridSnap;
+			//randomY = Math.floor(Math.random() * amountOfLines)* gridSnap;
 			player.Id = playersIndex;
 			player.DrawSnake(randomX, randomY, length);
 			addChild(player);
@@ -225,25 +232,27 @@ package snake.game
 	}
 		
 		private function Control(e:KeyboardEvent):void {
-			if(players[0] != null){
-				if (e.keyCode == 87 && players[0].lastMoveDir != 3) {//w
-					players[0].moveDir = 1;
+			if(players[client.id] != null){
+				if (e.keyCode == 87 && players[client.id].lastMoveDir != 3) {//w
+					players[client.id].moveDir = 1;
 				}
-				if (e.keyCode == 68 && players[0].lastMoveDir != 4) {//d
-					players[0].moveDir = 2;
+				if (e.keyCode == 68 && players[client.id].lastMoveDir != 4) {//d
+					players[client.id].moveDir = 2;
 				}
-				if (e.keyCode == 83 && players[0].lastMoveDir != 1) {//s
-					players[0].moveDir = 3;
+				if (e.keyCode == 83 && players[client.id].lastMoveDir != 1) {//s
+					players[client.id].moveDir = 3;
 				}
-				if (e.keyCode == 65 && players[0].lastMoveDir != 2) {//a
-					players[0].moveDir = 4;
+				if (e.keyCode == 65 && players[client.id].lastMoveDir != 2) {//a
+					players[client.id].moveDir = 4;
 				}
 				if (e.keyCode == 81) {
-					dropBlock(0, players[0].color);
+					dropBlock(client.id, players[client.id].color);
 				}
+				/* - send movedirection
+				 */
 			}
 			
-			if(players[1] != null){
+			/*if(players[1] != null){
 				if (e.keyCode == 38 && players[1].lastMoveDir != 3) {//up
 					players[1].moveDir = 1;
 				}
@@ -259,7 +268,7 @@ package snake.game
 				if (e.keyCode == 13) {
 					dropBlock(1, players[1].color);
 				}
-			}
+			}*/
 		}
 		
 		private function checkColl():void {

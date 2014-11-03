@@ -11,11 +11,17 @@ package snake.game
 		public var id:int;
 		
 		public function setId(id:int):void {
-			id = 1;
+			id = id;
 		}
 		
-		public function getPositions():void {
+		public function getPosition():void {
 			trace(PlayerList.players.length);
+			for (var i:int = 0; i < PlayerList.players.length; i++) 
+			{
+				if (i != id) {
+					trace(PlayerList.players[i].dir);
+				}
+			}
 		}
 		
 		public function setPositions():void {
