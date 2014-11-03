@@ -15,10 +15,7 @@ package snake.game
 		}
 		
 		public function getPositions():void {
-			for (var i:int = 0; i < PlayerList.players.length; i++) 
-			{
-				trace(i);
-			}
+			trace(PlayerList.players.length);
 		}
 		
 		public function setPositions():void {
