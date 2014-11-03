@@ -90,10 +90,10 @@ package snake.game
 			squares.push(square);
 		}
 		
-		public function moveSnake():void {
+		public function moveSnake(dir:int):void {
 			removeChild(squares[0]);
 			squares.splice(0, 1);
-			switch(moveDir) {
+			switch(dir) {
 				/*up*/case 1:
 					lastPos.y = lastPos.y -= 11;
 					break;

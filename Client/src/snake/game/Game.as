@@ -25,7 +25,7 @@ package snake.game
 	 
 	public class Game extends Sprite 
 	{
-		private var playerAmount:int = 2;
+		private var playerAmount:int = 1;
 		private var startLength:int = 4;
 		private var moveTime:int = 3;
 		private var amountOfLines:int = 40;
@@ -94,15 +94,23 @@ package snake.game
 			removeEventListener(EnterFrameEvent.ENTER_FRAME, countDown);
 			countDownIndex = 0;
 			originalRoundsLeft = roundsLeft;
-			client.setId(0);
+			client.getid();
 			removeEventListener(KeyboardEvent.KEY_DOWN, startGame);
 			gameWidth = amountOfLines * gridSnap;
 			gameHeight = amountOfLines * gridSnap;
 			for (var i:int = 0; i < playerAmount; i++) 
 			{
 				player = new Block();
-				randomX = Math.floor(Math.random()/2 * amountOfLines)* gridSnap;
-				randomY = Math.floor(Math.random() * amountOfLines)* gridSnap;
+				if (i != client.id) {
+					randomX = Math.floor(Math.random()/2 * amountOfLines)* gridSnap;
+					randomY = Math.floor(Math.random() * amountOfLines) * gridSnap;
+					client.setPositions();
+					con.dataSenderTCP.SendPlayerPosition(players[client.id].moveDir);
+				}
+				else {
+					randomX = client.getPositionX();
+					randomY = client.getPositionY();
+				}
 				player.Id = i;
 				player.DrawSnake(randomX, randomY, startLength);
 				addChild(player);
@@ -136,12 +144,11 @@ package snake.game
 			}
 			if (timer >= moveTime){
 				if (reset == false) {
-					client.getPosition();
 					for each (var item:Block in players) 
 					{
-						item.moveSnake();
+						//item.moveDir = client.getDir();
+						item.moveSnake(client.getDir());
 					}
-					con.dataSenderTCP.SendPlayerPosition(3);
 					checkColl();
 					timer = 0;
 				}
@@ -162,14 +169,16 @@ package snake.game
 		}
 		
 		public function ResetGame():void {
-			if (players[0].squares.length == players[1].squares.length) {
-				trace("tie game!");
-			}
-			if (players[0].squares.length > players[1].squares.length) {
-				trace("player 0 won with " + players[0].squares.length + " blocks!");
-			}
-			else {
-				trace("player 1 won with " + players[1].squares.length + " blocks!");
+			if (playerAmount > 1 ){
+				if (players[0].squares.length == players[1].squares.length) {
+					trace("tie game!");
+				}
+				if (players[0].squares.length > players[1].squares.length) {
+					trace("player 0 won with " + players[0].squares.length + " blocks!");
+				}
+				else {
+					trace("player 1 won with " + players[1].squares.length + " blocks!");
+				}
 			}
 			for each (var player:Block in players) 
 			{
@@ -248,6 +257,7 @@ package snake.game
 				if (e.keyCode == 81) {
 					dropBlock(client.id, players[client.id].color);
 				}
+				con.dataSenderTCP.SendPlayerPosition(players[client.id].moveDir);
 				/* - send movedirection
 				 */
 			}
