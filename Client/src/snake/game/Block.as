@@ -4,6 +4,7 @@ package snake.game
 	import starling.display.Sprite;
 	import flash.geom.Vector3D;
 	import starling.utils.Color;
+	import snake.net.Connection;
 	
 	/**
 	 * ...
@@ -22,6 +23,7 @@ package snake.game
 		public var lastMoveDir:int = 2;
 		
 		public var color:uint;
+		private var con:Connection;
 		//1 = up
 		//2 = right
 		//3 = down
@@ -41,6 +43,8 @@ package snake.game
 				squares.push(square);
 				lastPos = new Vector3D(PosX + (11*i), PosY, length, 0);
 			}
+			con = Connection.GetInstance();
+			con.dataSenderTCP.SendPlayerPosition(lastPos.x, lastPos.y);
 		}
 		
 		public function removeSnake():void {

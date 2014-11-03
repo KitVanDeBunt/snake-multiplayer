@@ -14,7 +14,7 @@ package snake.game
 		private var y:int;
 		
 		public function getid():void {
-			id = 0;
+			id = PlayerList.playerID;
 			//id = get id from server per player
 		}
 		
@@ -29,16 +29,16 @@ package snake.game
 			return dir;
 		}
 		
-		public function getPositionX():int {
-			if(PlayerList.players[id] != null){
-				x = PlayerList.players[id].xPos;
+		public function getPositionX(index:int):int {
+			if(PlayerList.players[index] != null){
+				x = PlayerList.players[index].xPos;
 			}
 			return x;
 		}
 		
-		public function getPositionY():int {
-			if(PlayerList.players[id] != null){
-				y = PlayerList.players[id].yPos;
+		public function getPositionY(index:int):int {
+			if(PlayerList.players[index] != null){
+				y = PlayerList.players[index].yPos;
 			}
 			return y;
 		}

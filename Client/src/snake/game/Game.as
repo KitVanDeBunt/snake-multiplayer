@@ -15,6 +15,8 @@ package snake.game
 	import starling.display.Shape;
 	import flash.geom.Vector3D;
 	import starling.utils.Color;
+	import snake.net.PlayerList;
+	import snake.net.Player;
 	
 	/**
 	 * ...
@@ -25,7 +27,7 @@ package snake.game
 	 
 	public class Game extends Sprite 
 	{
-		private var playerAmount:int = 1;
+		private var playerAmount:int = 2;
 		private var startLength:int = 4;
 		private var moveTime:int = 3;
 		private var amountOfLines:int = 40;
@@ -94,21 +96,26 @@ package snake.game
 			removeEventListener(EnterFrameEvent.ENTER_FRAME, countDown);
 			countDownIndex = 0;
 			originalRoundsLeft = roundsLeft;
-			client.getid();
 			removeEventListener(KeyboardEvent.KEY_DOWN, startGame);
 			gameWidth = amountOfLines * gridSnap;
 			gameHeight = amountOfLines * gridSnap;
 			trace("startgame");
 			for (var i:int = 0; i < playerAmount; i++) 
 			{
-				player = new Block();
-				randomX = client.getPositionX();
-				randomY = client.getPositionY();
-				trace(randomX + randomY);
-				player.Id = i;
-				player.DrawSnake(randomX, randomY, startLength);
-				addChild(player);
-				players.push(player);
+					player = new Block();
+				if (i == PlayerList.playerID){
+						randomX = Math.floor(Math.random()/2 * amountOfLines)*(gameWidth/amountOfLines);
+						randomY = Math.floor(Math.random() * amountOfLines) * (gameHeight / amountOfLines);
+					}
+				else{
+						randomX = PlayerList.players[i].xPos;
+						randomY = PlayerList.players[i].yPos;
+					}
+					trace( PlayerList.playerID);
+					player.Id = i;
+					player.DrawSnake(randomX, randomY, startLength);
+					addChild(player);
+					players.push(player);
 			}
 			drawWall();
 		}
@@ -163,7 +170,7 @@ package snake.game
 		}
 		
 		public function ResetGame():void {
-			if (playerAmount > 1 ){
+			/*if (playerAmount > 1 ){
 				if (players[0].squares.length == players[1].squares.length) {
 					trace("tie game!");
 				}
@@ -173,7 +180,7 @@ package snake.game
 				else {
 					trace("player 1 won with " + players[1].squares.length + " blocks!");
 				}
-			}
+			}*/
 			for each (var player:Block in players) 
 			{
 				removeChild(player);
