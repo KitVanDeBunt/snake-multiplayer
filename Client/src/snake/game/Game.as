@@ -10,6 +10,7 @@ package snake.game
 	import starling.events.KeyboardEvent;
 	import snake.menu.ScreenEvents;
 	import snake.Main;
+	import snake.game.Client;
 	import feathers.data.ListCollection;
 	import starling.display.Shape;
 	import flash.geom.Vector3D;
@@ -30,6 +31,7 @@ package snake.game
 		private var amountOfLines:int = 40;
 		private var gridSnap:int = 11;
 		
+		private var client:Client = new Client;
 		private var gameWidth:int;
 		private var gameHeight:int;
 		private var pickUp:PickUp;
@@ -129,6 +131,7 @@ package snake.game
 			}
 			if (timer >= moveTime){
 				if (reset == false) {
+					client.getPositions();
 					for each (var item:Block in players) 
 					{
 						item.moveSnake();
