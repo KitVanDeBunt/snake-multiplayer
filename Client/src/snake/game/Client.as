@@ -10,8 +10,8 @@ package snake.game
 	{
 		public var id:int;
 		
-		public function getId(id:int):void {
-			id = 0;
+		public function setId(id:int):void {
+			id = 1;
 		}
 		
 		public function getPositions():void {
