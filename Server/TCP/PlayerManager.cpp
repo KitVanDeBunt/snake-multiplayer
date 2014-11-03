@@ -55,6 +55,11 @@ void PlayerManager::SetPlayerDirection(unsigned char direction,SystemAddress add
 	GetPlayer(addres)->direction(direction);
 }
 
+void PlayerManager::SetPlayerPosition(unsigned char newXPos,unsigned char newYPos,SystemAddress addres){
+	GetPlayer(addres)->xPos(newXPos);
+	GetPlayer(addres)->yPos(newYPos);
+}
+
 unsigned char PlayerManager::GetPlayerId(SystemAddress addres){
 	return GetPlayer(addres)->id();
 }

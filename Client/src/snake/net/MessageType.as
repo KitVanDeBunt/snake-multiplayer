@@ -12,6 +12,7 @@ package snake.net {
 		//client to server
 		public static const PLAYER_SET_NAME:int = 30;
 		public static const PLAYER_SET_NEW_DIRECTION:int = 31;
+		public static const PLAYER_SET_NEW_POSITION:int = 34;
 		public static const PLAYER_READY:int = 32;
 		public static const ADMIN_START:int = 33;
 		

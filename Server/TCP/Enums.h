@@ -7,6 +7,7 @@ enum class MessageType {
 	//client to server
 	PLAYER_SET_NAME = 30, 
 	PLAYER_SET_NEW_DIRECTION = 31,
+	PLAYER_SET_NEW_POSITION = 34,
 	PLAYER_READY = 32,
 	ADMIN_START = 33,
 	//server to client

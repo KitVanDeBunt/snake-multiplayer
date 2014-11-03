@@ -108,7 +108,7 @@ package snake.net
 			WriteBytes(bytes);
 		}
 		
-		public function SendPlayerPosition(direction:int):void {
+		public function SendPlayerDirection(direction:int):void {
 			var messageLength:int = 6;
 			
 			var bytes:ByteArray = new ByteArray();
@@ -119,6 +119,24 @@ package snake.net
 			
 			Main.debug.print(("SendNewPlayerDirection:" + direction), Debug.Server_3);
 			bytes.writeByte(direction);
+			
+			WriteBytes(bytes);
+			socket_.flush();
+		}
+		
+		
+		public function SendPlayerPosition(xPos:int,yPos:int):void {
+			var messageLength:int = 7;
+			
+			var bytes:ByteArray = new ByteArray();
+			bytes.endian = Endian.LITTLE_ENDIAN;
+			
+			bytes.writeInt(messageLength);
+			bytes.writeByte(MessageType.PLAYER_SET_NEW_POSITION);
+			
+			Main.debug.print(("SendNewPlayerPosition: (" + xPos+","+yPos+")"), Debug.Server_3);
+			bytes.writeByte(xPos);
+			bytes.writeByte(yPos);
 			
 			WriteBytes(bytes);
 			socket_.flush();

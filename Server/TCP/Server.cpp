@@ -102,6 +102,12 @@ void Server::ExecuteMessage(MessageType messageType,int messageLength,SystemAddr
 		data = pack->data;
 		playersManager.SetPlayerDirection(data[5],caller);
 		break;
+	
+	case MessageType::PLAYER_SET_NEW_POSITION:
+		data = pack->data;
+		playersManager.SetPlayerPosition(data[5],data[6],caller);
+		break;
+
 	case MessageType::PLAYER_READY:
 		data = pack->data;
 		if(data[5]==1){
