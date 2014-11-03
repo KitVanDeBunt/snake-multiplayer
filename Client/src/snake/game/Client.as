@@ -8,9 +8,16 @@ package snake.game
 	 */
 	public class Client 
 	{
+		public var id:int;
+		
+		public function getId(id:int):void {
+			id = 0;
+		}
+		
 		public function getPositions():void {
-			if(PlayerList != null){
-				trace(PlayerList.players);
+			for (var i:int = 0; i < PlayerList.players.length; i++) 
+			{
+				trace(i);
 			}
 		}
 		

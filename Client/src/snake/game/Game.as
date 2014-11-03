@@ -63,16 +63,15 @@ package snake.game
 			//show players or connect or whatever
 			trace("menu");
 			//removeEventListener(ScreenEvents.NEW_PLAYERLIST, menu);
-			addEventListener(KeyboardEvent.KEY_DOWN , startCountDown);
+			//addEventListener(KeyboardEvent.KEY_DOWN , startCountDown);
+			Main.eventManager.addEventListener(ScreenEvents.SERVER_PLAYER_POSITION_LIST, startCountDown);
 		}
 		
-		private function startCountDown(e:KeyboardEvent):void {
-			if(e.keyCode == 13){
+		private function startCountDown(e:ScreenEvents):void {
 				trace("3!");
 				startGame();
 				addEventListener(EnterFrameEvent.ENTER_FRAME, countDown);
 				removeEventListener(KeyboardEvent.KEY_DOWN, startCountDown);
-			}
 		}
 		
 		private function countDown(e:EnterFrameEvent):void {
