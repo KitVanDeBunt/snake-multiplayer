@@ -102,10 +102,8 @@ package snake.game
 			for (var i:int = 0; i < playerAmount; i++) 
 			{
 				player = new Block();
-				//randomX = client.getPositionX();
-				//randomY = client.getPositionY();
-				randomX = 110;
-				randomY = 110;
+				randomX = client.getPositionX();
+				randomY = client.getPositionY();
 				trace(randomX + randomY);
 				player.Id = i;
 				player.DrawSnake(randomX, randomY, startLength);
@@ -284,7 +282,6 @@ package snake.game
 					players[i].lastPos.y < 0 || players[i].lastPos.y >= gameHeight)
 					{
 						//removeEventListener(Event.ENTER_FRAME, Update);
-						trace("hit");
 						resetPlayer(players[i],players[i].Id,players[i].squares.length - 2);
 						break;
 				}
@@ -294,6 +291,7 @@ package snake.game
 						{
 							if (players[i].square != players[i].squares[o])
 							{
+								trace("hit");
 								resetPlayer(players[i],players[i].Id,players[i].squares.length - 2);
 								break;
 							}
