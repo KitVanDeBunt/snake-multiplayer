@@ -76,16 +76,11 @@ package snake.net
 					listYPos.push(_bytes.readByte());
 				}
 				
-				for (var j:int = 0; j < PlayerList.playerCount; j++) 
+				for (var k:int = 0; k < PlayerList.playerCount; k++) 
 				{
-					for (var k:int = 0; k < listId.length; k++) 
-					{
-						if (PlayerList.player(j).id == listId[k]) {
-							PlayerList.player(j).xPos = listXPos[k];
-							PlayerList.player(j).yPos = listYPos[k];
-							return;
-						}
-					}
+					Main.debug.print(("p pos: ("+listXPos[k]+","+listYPos[k]+")"),Debug.Server_2);
+					PlayerList.player(k).xPos = listXPos[k];
+					PlayerList.player(k).yPos = listYPos[k];
 				}
 				Main.eventManager.dispatchEvent(new Event(ScreenEvents.SERVER_PLAYER_POSITION_LIST));
 			}
