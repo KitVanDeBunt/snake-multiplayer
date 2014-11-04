@@ -141,7 +141,8 @@ package snake.game
 				}
 			}
 			if (normalPickups == 0) {
-				if(roundsLeft > 0){
+				if (roundsLeft > 0) {
+					//get pickup positions
 					addPickUp(4);
 				}
 				else {
@@ -169,15 +170,15 @@ package snake.game
 			 */
 			trace("reset");
 			Player.removeSnake();
-			getPlayerById(PlayerList.playerID).moveDir = 2;
-			con.dataSenderTCP.SendPlayerDirection(getPlayerById(PlayerList.playerID).moveDir);
 			player = new Block();
 			randomX = 33;
 			randomY = PlayerList.players[playersIndex].id * gridSnap;
 			player.Id = playersIndex;
+			player.moveDir = 2;
 			player.DrawSnake(randomX, randomY, length);
 			addChild(player);
 			players[playersIndex] = player;
+			con.dataSenderTCP.SendPlayerDirection(getPlayerById(PlayerList.playerID).moveDir);
 		}
 		
 		public function ResetGame():void {
@@ -274,31 +275,13 @@ package snake.game
 					me.moveDir = 4;
 				}
 				if (e.keyCode == 81) {
-					dropBlock(PlayerList.playerID, me.color);
+					dropBlock(me.Id, me.color);
 				}
 				con.dataSenderTCP.SendPlayerDirection(me.moveDir);
 				press = true;
-				/* - send movedirection
+				/* - send dropblock
 				 */
 			}
-			
-			/*if(players[1] != null){
-				if (e.keyCode == 38 && players[1].lastMoveDir != 3) {//up
-					players[1].moveDir = 1;
-				}
-				if (e.keyCode == 39 && players[1].lastMoveDir != 4) {//right
-					players[1].moveDir = 2;
-				}
-				if (e.keyCode == 40 && players[1].lastMoveDir != 1) {//down
-					players[1].moveDir = 3;
-				}
-				if (e.keyCode == 37 && players[1].lastMoveDir != 2) {//left
-					players[1].moveDir = 4;
-				}
-				if (e.keyCode == 13) {
-					dropBlock(1, players[1].color);
-				}
-			}*/
 		}
 		
 		private function getPlayerById(id:int):Block {
@@ -339,7 +322,7 @@ package snake.game
 						if(pickUps[k].id == -1 || pickUps[k].id == players[i].Id){
 							removeChild(pickUps[k]);
 							pickUps.splice(k, 1);
-							players[i].addBlock(PlayerList.players[i].dir);
+							players[i].addBlock();
 							trace("Player " + i + " has picked up a block and is now " + players[i].squares.length + " blocks long");
 						}
 						else {
