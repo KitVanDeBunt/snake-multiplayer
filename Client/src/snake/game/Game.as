@@ -11,6 +11,7 @@ package snake.game
 	import snake.menu.ScreenEvents;
 	import snake.Main;
 	import snake.game.Client;
+	import snake.game.Texts;
 	import feathers.data.ListCollection;
 	import starling.display.Shape;
 	import flash.geom.Vector3D;
@@ -34,7 +35,8 @@ package snake.game
 		private var gridSnap:int = 11;
 		
 		//private var client:Client = new Client;
-		private var gameWidth:int;
+		private var TextScript:Texts = new Texts;
+		public var gameWidth:int;
 		private var gameHeight:int;
 		private var pickUp:PickUp;
 		private var player:Block;
@@ -48,7 +50,7 @@ package snake.game
 		private var countDownIndex:int = 0;
 		private var wallX:Shape;
 		private var wallY:Shape;
-		private var wallWidth:int = 20;
+		public var wallWidth:int = 20;
 		private var roundsLeft:int = 3;
 		private var originalRoundsLeft:int;
 		private var normalPickups:int = 0;
@@ -96,6 +98,7 @@ package snake.game
 		}
 		
 		private function startGame():void {
+			addChild(TextScript);
 			removeEventListener(EnterFrameEvent.ENTER_FRAME, countDown);
 			countDownIndex = 0;
 			originalRoundsLeft = roundsLeft;
@@ -158,9 +161,10 @@ package snake.game
 					for (var i:int = 0; i < PlayerList.playerCount; i++)
 					{
 						//item.moveDir = client.getDir();
-						players[i].moveSnake(PlayerList.players[i].dir,i);
+						players[i].moveSnake(PlayerList.players[i].dir, i);
 					}
 					checkColl();
+					TextScript.ShowScore("Rounds Left:"+ (roundsLeft + 1), gameWidth+wallWidth+60);
 					timer = 0;
 				}
 			}
