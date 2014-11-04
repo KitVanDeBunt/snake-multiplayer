@@ -16,7 +16,7 @@ char str[512];
 Connector* con;
 Connector* policyServer;
 
-const int SERVER_PORT = 11100;
+const int SERVER_PORT = 4000;
 const int POLICY_SERVER_PORT = 843;
 
 void WaitForEnter(void) { 

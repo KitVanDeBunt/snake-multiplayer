@@ -33,12 +33,12 @@ package snake.game
 		private var amountOfLines:int = 40;
 		private var gridSnap:int = 11;
 		
-		private var client:Client = new Client;
+		//private var client:Client = new Client;
 		private var gameWidth:int;
 		private var gameHeight:int;
 		private var pickUp:PickUp;
 		private var player:Block;
-		private var players:Array = new Array();
+		private var players:Vector.<Block> = new Vector.<Block>();
 		private var pickUps:Array = new Array();
 		private var timer:int;
 		private var randomX:int;
@@ -99,7 +99,11 @@ package snake.game
 			removeEventListener(KeyboardEvent.KEY_DOWN, startGame);
 			gameWidth = amountOfLines * gridSnap;
 			gameHeight = amountOfLines * gridSnap;
-			trace("startgame");
+			
+			playerAmount = PlayerList.players.length;
+			
+			trace("startgame players: "+playerAmount);
+			
 			for (var i:int = 0; i < playerAmount; i++) 
 			{
 					player = new Block();
@@ -111,8 +115,8 @@ package snake.game
 						randomX = PlayerList.players[i].xPos;
 						randomY = PlayerList.players[i].yPos;
 					}
-					trace( PlayerList.playerID);
-					player.Id = i;
+					trace( "playerID:"+PlayerList.players[i].id);
+					player.Id = PlayerList.players[i].id;
 					player.DrawSnake(randomX, randomY, startLength);
 					addChild(player);
 					players.push(player);
@@ -144,10 +148,10 @@ package snake.game
 			}
 			if (timer >= moveTime){
 				if (reset == false) {
-					for each (var item:Block in players) 
+					for (var i:int = 0; i < PlayerList.playerCount; i++)
 					{
 						//item.moveDir = client.getDir();
-						item.moveSnake(client.getDir());
+						players[i].moveSnake(PlayerList.players[i].dir);
 					}
 					checkColl();
 					timer = 0;
@@ -242,23 +246,24 @@ package snake.game
 	}
 		
 		private function Control(e:KeyboardEvent):void {
-			if(players[client.id] != null){
-				if (e.keyCode == 87 && players[client.id].lastMoveDir != 3) {//w
-					players[client.id].moveDir = 1;
+			var me:Block = getPlayerById(PlayerList.playerID);
+			if(me != null){
+				if (e.keyCode == 87 && me.lastMoveDir != 3) {//w
+					me.moveDir = 1;
 				}
-				if (e.keyCode == 68 && players[client.id].lastMoveDir != 4) {//d
-					players[client.id].moveDir = 2;
+				if (e.keyCode == 68 && me.lastMoveDir != 4) {//d
+					me.moveDir = 2;
 				}
-				if (e.keyCode == 83 && players[client.id].lastMoveDir != 1) {//s
-					players[client.id].moveDir = 3;
+				if (e.keyCode == 83 && me.lastMoveDir != 1) {//s
+					me.moveDir = 3;
 				}
-				if (e.keyCode == 65 && players[client.id].lastMoveDir != 2) {//a
-					players[client.id].moveDir = 4;
+				if (e.keyCode == 65 && me.lastMoveDir != 2) {//a
+					me.moveDir = 4;
 				}
 				if (e.keyCode == 81) {
-					dropBlock(client.id, players[client.id].color);
+					dropBlock(PlayerList.playerID, me.color);
 				}
-				con.dataSenderTCP.SendPlayerDirection(players[client.id].moveDir);
+				con.dataSenderTCP.SendPlayerDirection(me.moveDir);
 				/* - send movedirection
 				 */
 			}
@@ -280,6 +285,16 @@ package snake.game
 					dropBlock(1, players[1].color);
 				}
 			}*/
+		}
+		
+		private function getPlayerById(id:int):Block {
+			for (var i:int = 0; i < players.length; i++) {
+				if (id == players[i].Id) {
+					return players[i];
+				}
+			}
+			throw Error("player not found");
+			return players[0];
 		}
 		
 		private function checkColl():void {

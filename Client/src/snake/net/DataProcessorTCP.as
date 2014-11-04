@@ -23,7 +23,6 @@ package snake.net
 				
 				var nameL:int;
 				var id:int = 0;
-				var dir:int = 0;
 				for (var j:int = 0; j < listLength; j++) 
 				{
 					//gettting name
@@ -39,7 +38,7 @@ package snake.net
 						name = name+newLLetter ;
 					}
 					
-					PlayerList.add(new Player(name,dir,id));
+					PlayerList.add(new Player(name,id));
 					Main.debug.print(("[Set Player List] Player: " + name + " ID: " + id) , Debug.Server_2);	
 				}
 				Main.eventManager.dispatchEvent(new starling.events.Event( ScreenEvents.NEW_PLAYERLIST ));
@@ -49,25 +48,17 @@ package snake.net
 				var listLength:int = _bytes.readInt();
 				var data:Vector.<Player> = new Vector.<Player>();
 				
-				var id:int;
-				var dir:int;
+				var listId:Vector.<int> = new Vector.<int>();
+				var listDir:Vector.<int> = new Vector.<int>();
 				for (var i:int = 0; i < listLength; i++) 
 				{
-					id = _bytes.readByte();
-					dir = _bytes.readByte();
-					
-					data.push(new Player("", dir, id));
+					listId.push(_bytes.readByte());
+					listDir.push(_bytes.readByte());
 				}
 				
 				for (var j:int = 0; j < PlayerList.playerCount; j++) 
 				{
-					for (var k:int = 0; k < data.length; k++) 
-					{
-						if (PlayerList.player(j).id == data[k].id) {
-							PlayerList.player(j).dir = data[k].dir;
-							return;
-						}
-					}
+					PlayerList.player(j).dir = listDir[j];
 				}
 			}
 			

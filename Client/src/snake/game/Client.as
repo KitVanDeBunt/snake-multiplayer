@@ -8,17 +8,16 @@ package snake.game
 	 */
 	public class Client 
 	{
-		public var id:int;
-		private var dir:int;
-		private var x:int;
-		private var y:int;
+		//private var x:int;
+		//private var y:int;
 		
-		public function getid():void {
+		/*public function getid():void {
 			id = PlayerList.playerID;
 			//id = get id from server per player
-		}
+		}*/
 		
-		public function getDir():int {
+		/*public function getDir():int {
+			var dir:int;
 			for (var i:int = 0; i < PlayerList.players.length; i++) 
 			{
 				if (PlayerList.players[i].id == PlayerList.playerID){
@@ -27,8 +26,8 @@ package snake.game
 				}
 			}
 			return dir;
-		}
-		
+		}*/
+		/*
 		public function getPositionX(index:int):int {
 			if(PlayerList.players[index] != null){
 				x = PlayerList.players[index].xPos;
@@ -42,7 +41,7 @@ package snake.game
 			}
 			return y;
 		}
-		
+		*/
 	}
 
 }

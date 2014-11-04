@@ -21,7 +21,7 @@ package snake.net
 	 */
 	public class Connection {
 		
-		static public const port:int = 11100;
+		static public const port:int = 4000;
 		static public const address:String = "127.0.0.1";
 		private var socket_:Socket;
 		

@@ -36,7 +36,7 @@ package snake.net
 				}
 			}
 			if (playerReturn == null) {
-				playerReturn = new Player("Player Error", 0, -1);
+				playerReturn = new Player("Player Error", -1);
 				Main.debug.print("[Error]player not found: ", Debug.Server_2);
 			}
 			return playerReturn;
