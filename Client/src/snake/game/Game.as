@@ -68,10 +68,10 @@ package snake.game
 		private function menu():void {
 			/*-get player playeramount, startlength,movetime,amountoflines, gridsnap.
 			 */
-			/*trace("menu");
+			trace("menu");
 			TextScript.x = 100;
 			TextScript.y = 100;
-			TextScript.startMenu(400, 400);
+			/*TextScript.startMenu(400, 400);
 			addChild(TextScript);*/
 			//removeEventListener(ScreenEvents.NEW_PLAYERLIST, menu);
 			startCountDown();
@@ -167,7 +167,7 @@ package snake.game
 						players[i].moveSnake(PlayerList.players[i].dir, i);
 					}
 					checkColl();
-					TextScript.ShowScore("Rounds Left:"+ (roundsLeft + 1), gameWidth+wallWidth+60);
+				//	TextScript.ShowScore("Rounds Left:"+ (roundsLeft + 1), gameWidth+wallWidth+60);
 					timer = 0;
 				}
 			}
@@ -193,14 +193,18 @@ package snake.game
 		public function ResetGame():void {
 			if (playerAmount > 1 ){
 				if (players[0].squares.length == players[1].squares.length) {
+					TextScript.endGame(2);
 					trace("tie game!");
 				}
 				if (players[0].squares.length > players[1].squares.length) {
 					trace("player 0 won with " + players[0].squares.length + " blocks!");
+					TextScript.endGame(0);
 				}
 				else {
 					trace("player 1 won with " + players[1].squares.length + " blocks!");
+					TextScript.endGame(1);
 				}
+				addChild(TextScript);
 			}
 			for each (var player:Block in players) 
 			{
@@ -213,7 +217,7 @@ package snake.game
 			removeChild(wallX);
 			removeChild(wallY);
 			TextScript.removeScore();
-			removeChild(TextScript);
+			//removeChild(TextScript);
 			players.splice(0,playerAmount);
 			pickUps.splice(0, pickUps.length);
 			removeEventListener(EnterFrameEvent.ENTER_FRAME, Update);
