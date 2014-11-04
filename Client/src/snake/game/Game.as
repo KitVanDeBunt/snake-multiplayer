@@ -241,14 +241,15 @@ package snake.game
 			{
 			pickUp = new PickUp;
 			addChild(pickUp);
-			randomX = Math.floor(Math.random() * amountOfLines)*(gameWidth/amountOfLines);
-			randomY = Math.floor(Math.random() * amountOfLines)*(gameHeight/amountOfLines);
+			randomX = 110;
+			randomY = 22 * i;
+			/*get randomX & randomY from server*/
 			if (randomX == 0 && randomY == 0 ||
-				randomX == gameWidth && randomY == 0 ||
-				randomX == 0 && randomY == gameHeight ||
-				randomX == gameWidth && randomY == gameHeight) {
+				randomX == gameWidth - gridSnap && randomY == 0 ||
+				randomX == 0 && randomY == gameHeight -gridSnap ||
+				randomX == gameWidth -gridSnap && randomY == gameHeight -gridSnap) {
 					removeChild(pickUp);
-					Amount -= 1;
+					Amount += 1;
 			}
 			else {
 				pickUp.addPickUp(randomX, randomY, 0x000000);
