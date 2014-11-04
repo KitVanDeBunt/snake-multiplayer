@@ -54,6 +54,7 @@ package snake.game
 		private var normalPickups:int = 0;
 		private var con:Connection;
 		private var press:Boolean = false;
+	//	private var move:Boolean = true;
 		
 		public function Game() {
 			//addEventListener(ScreenEvents.NEW_PLAYERLIST , menu);
@@ -132,8 +133,6 @@ package snake.game
 		private function Update(e:Event):void {
 			 /* - get other movedirections
 			 */
-			 con.dataSenderTCP.SendPlayerPosition(9, 0);
-			 trace(PlayerList.players[0].xPos);
 			timer += 1;
 			normalPickups = 0;
 			for each (var thing:PickUp in pickUps) 
@@ -159,16 +158,11 @@ package snake.game
 					for (var i:int = 0; i < PlayerList.playerCount; i++)
 					{
 						//item.moveDir = client.getDir();
-						players[i].moveSnake(PlayerList.players[i].dir, i);
+						players[i].moveSnake(PlayerList.players[i].dir,i);
 					}
 					checkColl();
 					timer = 0;
 				}
-			}
-			con.dataSenderTCP.SendPlayerPosition(111, 111);
-			for (var i:int = 0; i < PlayerList.playerCount; i++)
-			{
-				Main.debug.print(("p"+i+": x:" + PlayerList.players[i].xPos + " y:" + PlayerList.players[i].yPos),Debug.Server_2);
 			}
 		}
 		
@@ -190,7 +184,7 @@ package snake.game
 		}
 		
 		public function ResetGame():void {
-			/*if (playerAmount > 1 ){
+			if (playerAmount > 1 ){
 				if (players[0].squares.length == players[1].squares.length) {
 					trace("tie game!");
 				}
@@ -200,7 +194,7 @@ package snake.game
 				else {
 					trace("player 1 won with " + players[1].squares.length + " blocks!");
 				}
-			}*/
+			}
 			for each (var player:Block in players) 
 			{
 				removeChild(player);
@@ -286,7 +280,9 @@ package snake.game
 					dropBlock(me.Id, me.color);
 				}
 				con.dataSenderTCP.SendPlayerDirection(me.moveDir);
+				con.dataSenderTCP.SendPlayerPosition(me.lastPos.x/11, me.lastPos.y/11);
 				press = true;
+				//move = true;
 				/* - send dropblock
 				 */
 			}

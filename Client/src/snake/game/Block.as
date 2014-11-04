@@ -48,7 +48,7 @@ package snake.game
 			}
 			con = Connection.GetInstance();
 			//trace("X:"+square.x +"Y:"+ square.y);
-			con.dataSenderTCP.SendPlayerPosition(11, 11);
+			con.dataSenderTCP.SendPlayerPosition(lastPos.x, lastPos.y);
 		}
 		
 		public function removeSnake():void {
@@ -101,10 +101,12 @@ package snake.game
 		public function moveSnake(dir:int, index:int):void {
 			removeChild(squares[0]);
 			squares.splice(0, 1);
-			dir = 2;
-			lastPos.x = PlayerList.players[index].xPos;
-			lastPos.y = PlayerList.players[index].yPos;
-			trace(lastPos);
+			/*if(move==true){
+				trace(PlayerList.players[index].xPos);
+				lastPos.x = PlayerList.players[index].xPos *11;
+				lastPos.y = PlayerList.players[index].yPos *11;
+				move = false;
+			}*/
 			switch(dir) {
 				/*up*/case 1:
 					lastPos.y = lastPos.y -= 11;
@@ -129,7 +131,7 @@ package snake.game
 			square.graphics.endFill();
 			addChild(square);
 			squares.push(square);
-			con.dataSenderTCP.SendPlayerPosition(lastPos.x, lastPos.y);
+			//con.dataSenderTCP.SendPlayerPosition(lastPos.x, lastPos.y);
 			//trace("X:" + pos.x + "Y:" + pos.y);
 		}
 		
