@@ -5,6 +5,7 @@ package snake.game
 	import flash.geom.Vector3D;
 	import starling.utils.Color;
 	import snake.net.Connection;
+	import snake.net.PlayerList;
 	
 	/**
 	 * ...
@@ -37,14 +38,17 @@ package snake.game
 			for (var i:int = 0; i < length; i++) {
 				square = new Shape();
 				square.graphics.beginFill(checkColor(Id));
-				square.graphics.drawRect(PosX + (11*i),PosY,10,10);
+				square.x = PosX + (11 * i);
+				square.y = PosY;
+				square.graphics.drawRect(0,0,10,10);
 				square.graphics.endFill();
 				addChild(square);
 				squares.push(square);
 				lastPos = new Vector3D(PosX + (11*i), PosY, length, 0);
 			}
 			con = Connection.GetInstance();
-			con.dataSenderTCP.SendPlayerPosition(PosX, PosY);
+			//trace("X:"+square.x +"Y:"+ square.y);
+			con.dataSenderTCP.SendPlayerPosition(11, 11);
 		}
 		
 		public function removeSnake():void {
@@ -94,9 +98,13 @@ package snake.game
 			squares.push(square);
 		}
 		
-		public function moveSnake(dir:int):void {
+		public function moveSnake(dir:int, index:int):void {
 			removeChild(squares[0]);
 			squares.splice(0, 1);
+			dir = 2;
+			lastPos.x = PlayerList.players[index].xPos;
+			lastPos.y = PlayerList.players[index].yPos;
+			trace(lastPos);
 			switch(dir) {
 				/*up*/case 1:
 					lastPos.y = lastPos.y -= 11;
@@ -111,7 +119,7 @@ package snake.game
 					lastPos.x = lastPos.x -= 11;
 					break;
 			}
-			lastMoveDir = moveDir;
+			lastMoveDir = dir;
 			square = new Shape();
 			square.graphics.beginFill(checkColor(Id));
 			//square.graphics.drawRect(lastPos.x, lastPos.y, 10, 10);
@@ -121,6 +129,8 @@ package snake.game
 			square.graphics.endFill();
 			addChild(square);
 			squares.push(square);
+			con.dataSenderTCP.SendPlayerPosition(lastPos.x, lastPos.y);
+			//trace("X:" + pos.x + "Y:" + pos.y);
 		}
 		
 		public function removeLastBlock():void {

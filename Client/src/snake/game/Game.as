@@ -132,6 +132,8 @@ package snake.game
 		private function Update(e:Event):void {
 			 /* - get other movedirections
 			 */
+			 con.dataSenderTCP.SendPlayerPosition(9, 0);
+			 trace(PlayerList.players[0].xPos);
 			timer += 1;
 			normalPickups = 0;
 			for each (var thing:PickUp in pickUps) 
@@ -157,7 +159,7 @@ package snake.game
 					for (var i:int = 0; i < PlayerList.playerCount; i++)
 					{
 						//item.moveDir = client.getDir();
-						players[i].moveSnake(PlayerList.players[i].dir);
+						players[i].moveSnake(PlayerList.players[i].dir, i);
 					}
 					checkColl();
 					timer = 0;
@@ -178,6 +180,7 @@ package snake.game
 			player.DrawSnake(randomX, randomY, length);
 			addChild(player);
 			players[playersIndex] = player;
+			con.dataSenderTCP.SendPlayerPosition(randomX, randomY);
 			con.dataSenderTCP.SendPlayerDirection(getPlayerById(PlayerList.playerID).moveDir);
 		}
 		
