@@ -27,7 +27,7 @@ package snake.game
 	 
 	public class Game extends Sprite 
 	{
-		private var playerAmount:int = 2;
+		private var playerAmount:int;
 		private var startLength:int = 4;
 		private var moveTime:int = 3;
 		private var amountOfLines:int = 40;
@@ -53,6 +53,7 @@ package snake.game
 		private var originalRoundsLeft:int;
 		private var normalPickups:int = 0;
 		private var con:Connection;
+		private var press:Boolean = false;
 		
 		public function Game() {
 			//addEventListener(ScreenEvents.NEW_PLAYERLIST , menu);
@@ -73,7 +74,6 @@ package snake.game
 		
 		private function startCountDown():void {
 				trace("3!");
-				startGame();
 				addEventListener(EnterFrameEvent.ENTER_FRAME, countDown);
 				removeEventListener(KeyboardEvent.KEY_DOWN, startCountDown);
 		}
@@ -88,7 +88,9 @@ package snake.game
 			}
 			if (countDownIndex / 30 == 3) {
 				addEventListener(Event.ENTER_FRAME, Update);
+				startGame();
 				addEventListener(KeyboardEvent.KEY_DOWN, Control);
+				addEventListener(KeyboardEvent.KEY_UP, keyUp);
 			}
 		}
 		
@@ -107,15 +109,18 @@ package snake.game
 			for (var i:int = 0; i < playerAmount; i++) 
 			{
 					player = new Block();
-				if (PlayerList.players[i].id == PlayerList.playerID){
+				/*if (PlayerList.players[i].id == PlayerList.playerID){
 						randomX = Math.floor(Math.random()/2 * amountOfLines)*(gameWidth/amountOfLines);
 						randomY = Math.floor(Math.random() * amountOfLines) * (gameHeight / amountOfLines);
 					}
-				else{
-						randomX = PlayerList.players[i].xPos;
-						randomY = PlayerList.players[i].yPos;
-					}
-					trace( "playerID:"+PlayerList.players[i].id);
+				else{*/
+						randomX = PlayerList.players[i].xPos * gridSnap;
+						randomY = PlayerList.players[i].yPos * gridSnap;
+					//}
+					//randomX = 33;
+					//randomY = PlayerList.players[i].id * gridSnap * 2 + 22;
+					trace( "playerID:" + PlayerList.players[i].id);
+					trace(PlayerList.players[i].xPos);
 					player.Id = PlayerList.players[i].id;
 					player.DrawSnake(randomX, randomY, startLength);
 					addChild(player);
@@ -164,9 +169,11 @@ package snake.game
 			 */
 			trace("reset");
 			Player.removeSnake();
+			getPlayerById(PlayerList.playerID).moveDir = 2;
+			con.dataSenderTCP.SendPlayerDirection(getPlayerById(PlayerList.playerID).moveDir);
 			player = new Block();
-			randomX = Math.floor(Math.random()/2 * amountOfLines)* gridSnap;
-			randomY = Math.floor(Math.random() * amountOfLines)* gridSnap;
+			randomX = 33;
+			randomY = PlayerList.players[playersIndex].id * gridSnap;
 			player.Id = playersIndex;
 			player.DrawSnake(randomX, randomY, length);
 			addChild(player);
@@ -198,6 +205,8 @@ package snake.game
 			players.splice(0,playerAmount);
 			pickUps.splice(0, pickUps.length);
 			removeEventListener(EnterFrameEvent.ENTER_FRAME, Update);
+			removeEventListener(KeyboardEvent.KEY_DOWN, Control);
+			removeEventListener(KeyboardEvent.KEY_UP, keyUp);
 		}
 		
 		private function endScreen():void {
@@ -244,10 +253,14 @@ package snake.game
 			}
 		}
 	}
+	
+		private function keyUp(e:KeyboardEvent):void {
+			press = false;
+		}
 		
 		private function Control(e:KeyboardEvent):void {
 			var me:Block = getPlayerById(PlayerList.playerID);
-			if(me != null){
+			if(me != null && press == false){
 				if (e.keyCode == 87 && me.lastMoveDir != 3) {//w
 					me.moveDir = 1;
 				}
@@ -264,6 +277,7 @@ package snake.game
 					dropBlock(PlayerList.playerID, me.color);
 				}
 				con.dataSenderTCP.SendPlayerDirection(me.moveDir);
+				press = true;
 				/* - send movedirection
 				 */
 			}
@@ -325,7 +339,7 @@ package snake.game
 						if(pickUps[k].id == -1 || pickUps[k].id == players[i].Id){
 							removeChild(pickUps[k]);
 							pickUps.splice(k, 1);
-							players[i].addBlock();
+							players[i].addBlock(PlayerList.players[i].dir);
 							trace("Player " + i + " has picked up a block and is now " + players[i].squares.length + " blocks long");
 						}
 						else {

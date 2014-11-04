@@ -68,8 +68,8 @@ package snake.game
 			return color
 		}
 		
-		public function addBlock():void {
-			switch(moveDir) {
+		public function addBlock(dir:int):void {
+			switch(dir) {
 				/*up*/case 1:
 					lastPos.y = lastPos.y -= 11;
 					break;
