@@ -17,7 +17,7 @@ package snake.game
 	import starling.utils.Color;
 	import snake.net.PlayerList;
 	import snake.net.Player;
-	
+	import snake.utils.debug.Debug;
 	/**
 	 * ...
 	 * @author Kit van de Bunt
@@ -162,6 +162,11 @@ package snake.game
 					checkColl();
 					timer = 0;
 				}
+			}
+			con.dataSenderTCP.SendPlayerPosition(111, 111);
+			for (var i:int = 0; i < PlayerList.playerCount; i++)
+			{
+				Main.debug.print(("p"+i+": x:" + PlayerList.players[i].xPos + " y:" + PlayerList.players[i].yPos),Debug.Server_2);
 			}
 		}
 		
