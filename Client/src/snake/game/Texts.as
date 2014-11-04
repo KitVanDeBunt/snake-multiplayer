@@ -10,7 +10,9 @@ package snake.game
 	 */
 	public class Texts extends Sprite
 	{
-		public var rounds:TextField;
+		private var rounds:TextField;
+		private var start:TextField;
+		private var end:TextField;
 		
 		public function ShowScore(text:String, posX:Number):void {
 			if (rounds != null) {
@@ -23,6 +25,19 @@ package snake.game
 		
 		public function removeScore():void {
 			removeChild(rounds);
+		}
+		
+		public function startMenu(width:int,height:int):void {
+			start = new TextField(width, height, "Multiplayer snake!", "Verdana", 35, 0, true);
+			addChild(start);
+		}
+		
+		public function removeStart():void {
+			removeChild(start);
+		}
+		
+		public function endGame(winner:int):void {
+			
 		}
 	}
 }

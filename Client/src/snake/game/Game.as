@@ -33,6 +33,7 @@ package snake.game
 		private var moveTime:int = 3;
 		private var amountOfLines:int = 40;
 		private var gridSnap:int = 11;
+		private var roundsLeft:int = 2;
 		
 		//private var client:Client = new Client;
 		private var TextScript:Texts = new Texts;
@@ -51,7 +52,6 @@ package snake.game
 		private var wallX:Shape;
 		private var wallY:Shape;
 		public var wallWidth:int = 20;
-		private var roundsLeft:int = 3;
 		private var originalRoundsLeft:int;
 		private var normalPickups:int = 0;
 		private var con:Connection;
@@ -68,7 +68,11 @@ package snake.game
 		private function menu():void {
 			/*-get player playeramount, startlength,movetime,amountoflines, gridsnap.
 			 */
-			trace("menu");
+			/*trace("menu");
+			TextScript.x = 100;
+			TextScript.y = 100;
+			TextScript.startMenu(400, 400);
+			addChild(TextScript);*/
 			//removeEventListener(ScreenEvents.NEW_PLAYERLIST, menu);
 			startCountDown();
 			//addEventListener(KeyboardEvent.KEY_DOWN , startCountDown);
@@ -98,7 +102,6 @@ package snake.game
 		}
 		
 		private function startGame():void {
-			addChild(TextScript);
 			removeEventListener(EnterFrameEvent.ENTER_FRAME, countDown);
 			countDownIndex = 0;
 			originalRoundsLeft = roundsLeft;
@@ -209,6 +212,8 @@ package snake.game
 			}
 			removeChild(wallX);
 			removeChild(wallY);
+			TextScript.removeScore();
+			removeChild(TextScript);
 			players.splice(0,playerAmount);
 			pickUps.splice(0, pickUps.length);
 			removeEventListener(EnterFrameEvent.ENTER_FRAME, Update);
