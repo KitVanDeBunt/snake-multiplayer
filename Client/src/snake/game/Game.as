@@ -157,7 +157,7 @@ package snake.game
 					for (var i:int = 0; i < PlayerList.playerCount; i++)
 					{
 						//item.moveDir = client.getDir();
-						players[i].moveSnake(players[i].moveDir);
+						players[i].moveSnake(PlayerList.players[i].dir);
 					}
 					checkColl();
 					timer = 0;
@@ -170,15 +170,15 @@ package snake.game
 			 */
 			trace("reset");
 			Player.removeSnake();
-			getPlayerById(PlayerList.playerID).moveDir = 2;
-			con.dataSenderTCP.SendPlayerDirection(getPlayerById(PlayerList.playerID).moveDir);
 			player = new Block();
 			randomX = 33;
 			randomY = PlayerList.players[playersIndex].id * gridSnap;
 			player.Id = playersIndex;
+			player.moveDir = 2;
 			player.DrawSnake(randomX, randomY, length);
 			addChild(player);
 			players[playersIndex] = player;
+			con.dataSenderTCP.SendPlayerDirection(getPlayerById(PlayerList.playerID).moveDir);
 		}
 		
 		public function ResetGame():void {
@@ -275,7 +275,7 @@ package snake.game
 					me.moveDir = 4;
 				}
 				if (e.keyCode == 81) {
-					dropBlock(PlayerList.playerID, me.color);
+					dropBlock(me.Id, me.color);
 				}
 				con.dataSenderTCP.SendPlayerDirection(me.moveDir);
 				press = true;
