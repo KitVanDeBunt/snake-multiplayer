@@ -50,15 +50,23 @@ package snake.net
 				
 				var listId:Vector.<int> = new Vector.<int>();
 				var listDir:Vector.<int> = new Vector.<int>();
+				
+				var listXPos:Vector.<int> = new Vector.<int>();
+				var listYPos:Vector.<int> = new Vector.<int>();
+				
 				for (var i:int = 0; i < listLength; i++) 
 				{
 					listId.push(_bytes.readByte());
 					listDir.push(_bytes.readByte());
+					listXPos.push(_bytes.readByte());
+					listYPos.push(_bytes.readByte());
 				}
 				
 				for (var j:int = 0; j < PlayerList.playerCount; j++) 
 				{
 					PlayerList.player(j).dir = listDir[j];
+					PlayerList.player(j).xPos = listXPos[j];
+					PlayerList.player(j).yPos = listYPos[j];
 				}
 			}
 			

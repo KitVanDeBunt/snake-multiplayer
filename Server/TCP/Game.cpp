@@ -78,7 +78,7 @@ void Game::SendPlayerDirectionList(){
 	//printf("[Game]Send Player Direction List-\n");
 	
 	int playerCount = playerManager_->GetPlayerCount();
-	int messageL = 9+(playerCount*2);
+	int messageL = 9+(playerCount*4);
 	
 	unsigned char *message = new unsigned char[messageL];
 	ByteConverter::PushIntToUnsignedCharArray(message,0,messageL);
@@ -90,9 +90,12 @@ void Game::SendPlayerDirectionList(){
 	for(int i = 0;i < playerCount;i++){
 		message[currentMessageL] = playerManager_->GetPlayers()[i].id();
 		message[currentMessageL+1] = playerManager_->GetPlayers()[i].direction();
+		
+		message[currentMessageL+2] = playerManager_->GetPlayers()[i].xPos();
+		message[currentMessageL+3] = playerManager_->GetPlayers()[i].yPos();
 		//cout<<"[Game] Dir: "<<(int)message[currentMessageL+1]<<" n:"<<playerManager_->GetPlayers()[i].getName()<<endl;
 		//printf("[Game] Dir: %u \n",message[currentMessageL+1]);
-		currentMessageL+=2;
+		currentMessageL+=4;
 	}
 	
 	//printf("-currentMessageL %d-\n",currentMessageL);
