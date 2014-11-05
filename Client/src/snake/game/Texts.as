@@ -37,7 +37,17 @@ package snake.game
 		}
 		
 		public function endGame(winner:int):void {
-			
+			if(winner == 2){
+				end = new TextField(400, 400, "Tie Game!", "Verdana", 35, 0, true);
+			}
+			else {
+				end = new TextField(400, 400, "Player" + winner + "wins!", "Verdana", 35, 0, true);
+			}
+			addChild(end);
+		}
+		
+		public function removeEnd():void {
+			removeChild(end);
 		}
 	}
 }
