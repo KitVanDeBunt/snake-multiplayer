@@ -12,10 +12,15 @@ using namespace RakNet;
 
 
 Game::Game(TCPInterface *peer,PlayerManager *playerManager){
+	cout<<"\n[Game] Created: !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" <<endl;
 	playerManager_ = playerManager;
 	peer_ = peer;
-	cout<<"\n[Game] Created: !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" <<endl;
+	
+	nonPlayerEntityManager = NonPlayerEntityManager();
 
+	nonPlayerEntityManager.CreatNewPickups();
+
+	nonPlayerEntityManager.SendNonPlayerEntityList();
 	SetPlayerPositions();
 	SendPlayerPositionList();
 	SendPlayerDirectionList();

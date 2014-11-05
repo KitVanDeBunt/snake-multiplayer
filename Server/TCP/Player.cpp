@@ -6,6 +6,7 @@ using std::endl;
 using std::string;
 
 	//  Client Game.as
+	//directions
 	//1 = up
 	//2 = right
 	//3 = down

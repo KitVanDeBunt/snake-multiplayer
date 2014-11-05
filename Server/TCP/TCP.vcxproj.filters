@@ -541,6 +541,10 @@
     <ClInclude Include="Settings.h">
       <Filter>net\Server</Filter>
     </ClInclude>
+    <ClInclude Include="NonPlayerEntity.h">
+      <Filter>net\Server\Game\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="NonPlayerEntityManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\RakNet\Source\_FindFirst.cpp">
@@ -904,6 +908,10 @@
     <ClCompile Include="PolicyServer.cpp">
       <Filter>net\polecyServer</Filter>
     </ClCompile>
+    <ClCompile Include="NonPlayerEntity.cpp">
+      <Filter>net\Server\Game\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="NonPlayerEntityManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\RakNet\Source\RakNet.vcproj">

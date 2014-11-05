@@ -246,6 +246,8 @@
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Enums.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="NonPlayerEntity.h" />
+    <ClInclude Include="NonPlayerEntityManager.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerManager.h" />
     <ClInclude Include="PolicyServer.h" />
@@ -370,6 +372,8 @@
     <ClCompile Include="Connector.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="NonPlayerEntity.cpp" />
+    <ClCompile Include="NonPlayerEntityManager.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerManager.cpp" />
     <ClCompile Include="PolicyServer.cpp" />

@@ -17,6 +17,7 @@ package snake.menu.screens
 	{
 		
 		private var gameLayer:Game;
+		private var uiLayer:Sprite;
 		
 		private var buttons:ButtonGroup;
 		private var buttonList:ListCollection = new ListCollection([
@@ -26,12 +27,15 @@ package snake.menu.screens
 		override protected function draw():void {}
 		
 		override protected function initialize():void {
-			buttons = new ButtonGroup();
-			this.addChild(buttons);
-			buttons.dataProvider = buttonList;
-			
 			gameLayer = new Game();
-			addChild(gameLayer);
+			uiLayer = new Sprite();
+			buttons = new ButtonGroup();
+			
+			this.addChild(gameLayer);
+			this.addChild(uiLayer);
+			
+			buttons.dataProvider = buttonList;
+			uiLayer.addChild(buttons);
 			
 			Main.debug.print("[gameCreated]",Debug.Menu_1);
 		}
